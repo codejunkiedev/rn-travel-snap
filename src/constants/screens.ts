@@ -1,4 +1,8 @@
 export enum AppScreens {
-  AUTH = 'Auth',
   FEED = 'Feed',
+}
+
+export enum AuthScreens {
+  LOGIN = 'Login',
+  REGISTER = 'Register',
 }

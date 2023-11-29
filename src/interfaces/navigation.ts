@@ -1,6 +1,6 @@
-import { AppScreens } from '@/constants/screens';
+import { AppScreens, AuthScreens } from '@/constants/screens';
 
-export type AppStackParamList = {
-  [AppScreens.AUTH]: undefined;
-  [AppScreens.FEED]: undefined;
+export type AuthStackParamList = {
+  [AuthScreens.LOGIN]: undefined;
+  [AuthScreens.REGISTER]: undefined;
 };
