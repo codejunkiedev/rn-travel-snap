@@ -1,11 +1,13 @@
 import AppNavigation from '@/navigation';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform, Dimensions } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback } from 'react';
 import { COLORS, FONT_FAMILY } from '@/typography';
+
+const { height, width } = Dimensions.get('window');
 
 SplashScreen.preventAutoHideAsync();
 
@@ -33,14 +35,23 @@ export default function App() {
     <View style={styles.container} onLayout={onLayoutRootView}>
       <SafeAreaProvider>
         <AppNavigation />
+        <StatusBar style='light' backgroundColor={COLORS.PRIMARY} />
       </SafeAreaProvider>
-      <StatusBar style='auto' backgroundColor={COLORS.PRIMARY} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    ...Platform.select({
+      web: {
+        width: 400,
+        height: height,
+      },
+      default: {
+        height: height,
+        width: width,
+      },
+    }),
   },
 });
