@@ -1,17 +1,28 @@
-import { AuthScreens } from '@/constants/screens';
-import { AuthStackParamList } from '@/interfaces/navigation';
+import { AuthScreens } from '@/constants';
+import { AuthStackParamList } from '@/interfaces';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { COLORS } from '@/typography';
 // screen imports
 import LoginScreen from '@/screens/auth/login-screen';
 import RegisterScreen from '@/screens/auth/register-screen';
+
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 const AuthStack = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        navigationBarColor: COLORS.PRIMARY,
+      }}
+    >
       <Stack.Screen name={AuthScreens.LOGIN} component={LoginScreen} />
-      <Stack.Screen name={AuthScreens.REGISTER} component={RegisterScreen} />
+      <Stack.Screen
+        name={AuthScreens.REGISTER}
+        initialParams={{ email: '', password: '' }}
+        component={RegisterScreen}
+      />
     </Stack.Navigator>
   );
 };

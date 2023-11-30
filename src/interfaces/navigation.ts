@@ -1,6 +1,7 @@
-import { AppScreens, AuthScreens } from '@/constants/screens';
+import { AppScreens, AuthScreens } from '@/constants';
+import { ILoginForm } from './payloads';
 
 export type AuthStackParamList = {
   [AuthScreens.LOGIN]: undefined;
-  [AuthScreens.REGISTER]: undefined;
+  [AuthScreens.REGISTER]: ILoginForm;
 };

@@ -13,6 +13,9 @@ export enum FONT_SIZE {
   MEDIUM = 16,
   LARGE = 18,
   EXTRA_LARGE = 20,
+  SUBTITLE = 24,
+  TITLE = 28,
+  HEADER = 32,
 }
 
 export enum FONT_WEIGHT {
