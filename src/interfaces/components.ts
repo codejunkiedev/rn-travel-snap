@@ -45,4 +45,5 @@ export interface IUserImagePickerProps {
   name: string;
   onImageSelected: (imageUri: string) => void;
   containerStyle?: ViewStyleProp;
+  disabled?: boolean;
 }

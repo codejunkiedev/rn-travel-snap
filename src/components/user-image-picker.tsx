@@ -12,6 +12,7 @@ export const UserImagePicker: React.FC<IUserImagePickerProps> = ({
   name,
   onImageSelected,
   containerStyle,
+  disabled,
 }) => {
   let component = null;
 
@@ -74,7 +75,7 @@ export const UserImagePicker: React.FC<IUserImagePickerProps> = ({
   };
 
   return (
-    <TouchableOpacity style={[styles.container, containerStyle]} onPress={handleOnPress}>
+    <TouchableOpacity style={[styles.container, containerStyle]} disabled={disabled ?? false} onPress={handleOnPress}>
       {component}
     </TouchableOpacity>
   );
