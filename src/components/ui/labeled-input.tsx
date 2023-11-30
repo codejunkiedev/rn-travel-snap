@@ -14,8 +14,26 @@ export const LabeledInput: React.FC<ILabeledInputProps> = ({
   secureTextEntry,
   keyboardType,
   textContentType,
+  keyboardAppearance,
+  autoCapitalize,
+  autoCorrect,
+  onBlur,
+  onFocus,
+  error,
+  touched,
 }) => {
   const [selected, setSelected] = useState<boolean>(false);
+
+  const handleOnBlur = () => {
+    setSelected(false);
+    onBlur?.();
+  };
+
+  const handleOnFocus = () => {
+    setSelected(true);
+    onFocus?.();
+  };
+
   return (
     <View style={[styles.container, selected && styles.selected, containerStyle]}>
       <Text style={[styles.label, labelStyle]}>{label}</Text>
@@ -26,10 +44,14 @@ export const LabeledInput: React.FC<ILabeledInputProps> = ({
         onChangeText={onChangeText}
         keyboardType={keyboardType ?? 'default'}
         style={[styles.input, inputStyle]}
-        onFocus={() => setSelected(true)}
-        onBlur={() => setSelected(false)}
+        onFocus={handleOnFocus}
+        onBlur={handleOnBlur}
+        autoCapitalize={autoCapitalize ?? 'none'}
+        autoCorrect={autoCorrect ?? false}
+        keyboardAppearance={keyboardAppearance ?? 'default'}
         textContentType={textContentType ?? 'none'}
       />
+      {error && touched && <Text style={[styles.error]}>{error}</Text>}
     </View>
   );
 };
@@ -62,5 +84,12 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.MEDIUM,
     color: COLORS.BLACK,
     fontFamily: FONT_FAMILY.POPPINS_REGULAR,
+  },
+  error: {
+    fontSize: FONT_SIZE.EXTRA_SMALL,
+    color: COLORS.DANGER,
+    fontFamily: FONT_FAMILY.POPPINS_REGULAR,
+    marginTop: 5,
+    textAlignVertical: 'center',
   },
 });

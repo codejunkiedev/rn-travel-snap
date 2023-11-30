@@ -3,31 +3,37 @@ import React, { useState } from 'react';
 import { ISignUpForm, RegisterScreenProps } from '@/interfaces';
 import { COLORS } from '@/typography';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { AuthScreens } from '@/constants';
+import { AuthScreens, validationSchemaSignUp } from '@/constants';
 import { useLoading } from '@/hooks';
 import { Button, LabeledInput } from '@/components/ui';
 import { UserImagePicker } from '@/components';
+import { useFormik } from 'formik';
 
 const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, route }) => {
   const { email, password } = route.params;
 
-  const [record, setRecord] = useState<ISignUpForm>({
-    email: email,
-    password: password,
-    confirmPassword: '',
-    name: '',
-    profilePicture: '',
-  });
-
+  const [profilePicture, setProfilePicture] = useState<string>('');
   const [loading, setLoading] = useLoading();
 
-  const onChange = (key: keyof ISignUpForm, value: ISignUpForm[keyof ISignUpForm]) => {
-    setRecord((prev) => ({ ...prev, [key]: value }));
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      email: email,
+      password: password,
+      confirmPassword: '',
+    },
+    validationSchema: validationSchemaSignUp,
+    onSubmit: (values) => handleSignUp(values),
+  });
+
+  const navigateToLogin = () => {
+    navigation.navigate(AuthScreens.LOGIN);
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = (payload: ISignUpForm) => {
     setLoading(true);
-    navigation.navigate(AuthScreens.LOGIN);
+    console.log(payload);
+    // navigateToLogin();
     setLoading(false);
   };
 
@@ -36,39 +42,49 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, route }) =>
       <KeyboardAvoidingView style={styles.root} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView style={styles.root} contentContainerStyle={styles.scrollContent}>
           <UserImagePicker
-            name={record.name}
-            imageUri={record.profilePicture}
-            onImageSelected={(uri) => onChange('profilePicture', uri)}
+            name={formik.values.name}
+            imageUri={profilePicture}
+            onImageSelected={(uri) => setProfilePicture(uri)}
           />
           <LabeledInput
             label='Name'
             placeholder='John Doe'
-            value={record.name}
-            onChangeText={(val) => onChange('name', val)}
+            value={formik.values.name}
+            onChangeText={formik.handleChange('name')}
+            error={formik.errors.name}
+            touched={formik.touched.name}
           />
           <LabeledInput
             label='Email'
             placeholder='johndoe@gmail.com'
-            value={record.email}
+            value={formik.values.email}
             keyboardType='email-address'
-            onChangeText={(val) => onChange('email', val)}
+            textContentType='emailAddress'
+            autoCapitalize='none'
+            onChangeText={formik.handleChange('email')}
+            error={formik.errors.email}
+            touched={formik.touched.email}
           />
           <LabeledInput
             label='Password'
             placeholder=''
-            value={record.password}
-            onChangeText={(val) => onChange('password', val)}
+            value={formik.values.password}
+            onChangeText={formik.handleChange('password')}
             secureTextEntry
+            error={formik.errors.password}
+            touched={formik.touched.password}
           />
           <LabeledInput
             label='Confirm Password'
             placeholder=''
-            value={record.confirmPassword}
-            onChangeText={(val) => onChange('confirmPassword', val)}
+            value={formik.values.confirmPassword}
+            onChangeText={formik.handleChange('confirmPassword')}
             secureTextEntry
+            error={formik.errors.confirmPassword}
+            touched={formik.touched.confirmPassword}
           />
-          <Button title='Sign Up' isLoading={loading} onPress={handleSignUp} buttonStyle={{ marginTop: 10 }} />
-          <Button title='Back to Login' mode='outlined' isLoading={loading} onPress={handleSignUp} />
+          <Button title='Sign Up' isLoading={loading} onPress={formik.handleSubmit} buttonStyle={{ marginTop: 10 }} />
+          <Button title='Back to Login' mode='outlined' isLoading={loading} onPress={navigateToLogin} />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

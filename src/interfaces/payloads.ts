@@ -1,10 +1,5 @@
-export interface ILoginForm {
-  email: string;
-  password: string;
-}
+import { validationSchemaSignIn, validationSchemaSignUp } from '@/constants';
+import * as yup from 'yup';
 
-export interface ISignUpForm extends ILoginForm {
-  name: string;
-  confirmPassword: string;
-  profilePicture: string;
-}
+export type ILoginForm = yup.InferType<typeof validationSchemaSignIn>;
+export type ISignUpForm = yup.InferType<typeof validationSchemaSignUp>;

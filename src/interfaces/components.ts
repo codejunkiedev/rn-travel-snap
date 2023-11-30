@@ -9,13 +9,22 @@ export interface ILabeledInputProps {
   label: string;
   value: string;
   onChangeText: (text: string) => void;
+  onBlur?: () => void;
+  onFocus?: () => void;
   placeholder?: string;
   secureTextEntry?: boolean;
   keyboardType?: KeyboardType;
   textContentType?: TextInputProps['textContentType'];
+  keyboardAppearance?: TextInputProps['keyboardAppearance'];
+  autoCapitalize?: TextInputProps['autoCapitalize'];
+  autoCorrect?: TextInputProps['autoCorrect'];
+
   labelStyle?: TextStyle;
   inputStyle?: TextStyle;
   containerStyle?: ViewStyle;
+
+  touched?: boolean;
+  error?: string;
 }
 
 export interface IButtonProps {
