@@ -8,9 +8,13 @@ import { IMAGES, AuthScreens, validationSchemaSignIn } from '@/constants';
 import { COLORS } from '@/typography';
 import { Button, LabeledInput } from '@/components/ui';
 import { useFormik } from 'formik';
+import { useDispatch } from 'react-redux';
+import { updateUser } from '@/redux/app-state.slice';
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, route }) => {
   const [loading, setLoading] = useLoading();
+
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
@@ -22,6 +26,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, route }) => {
     try {
       setLoading(true);
       console.log('payload', payload);
+      dispatch(updateUser({ email: payload.email, name: 'John Doe' }));
     } catch (e) {
       console.warn(e);
     } finally {

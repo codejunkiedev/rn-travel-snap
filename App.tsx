@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
       default: {
         height: height,
         width: width,
+        flex: 1,
       },
     }),
   },
