@@ -6,6 +6,9 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback } from 'react';
 import { COLORS, FONT_FAMILY } from '@/typography';
+import { Provider } from 'react-redux';
+import { persistor, store } from '@/redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const { height, width } = Dimensions.get('window');
 
@@ -34,8 +37,12 @@ export default function App() {
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
       <SafeAreaProvider>
-        <AppNavigation />
-        <StatusBar style='light' backgroundColor={COLORS.PRIMARY} />
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <AppNavigation />
+            <StatusBar style='light' backgroundColor={COLORS.PRIMARY} />
+          </PersistGate>
+        </Provider>
       </SafeAreaProvider>
     </View>
   );
