@@ -1,12 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { IAvatarProps } from '@/interfaces';
-import { COLORS, FONT_FAMILY } from '@/typography';
+import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 import { getInitials } from '@/utils';
 
 export const Avatar: React.FC<IAvatarProps> = ({ name }) => {
   const initials = getInitials(name);
-  const fontSize = initials.length > 2 ? 35 : 45;
+  const fontSize = initials.length > 2 ? FONT_SIZE.SUBHEADER : FONT_SIZE.HEADER;
 
   return (
     <View style={styles.container}>

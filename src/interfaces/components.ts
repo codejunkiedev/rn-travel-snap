@@ -1,4 +1,4 @@
-import type { ViewStyle, TextStyle, KeyboardType, TextInputProps } from 'react-native';
+import type { ViewStyle, TextStyle, KeyboardType, TextInputProps, AlertButton, ModalProps } from 'react-native';
 
 type ViewStyleProp = ViewStyle | ViewStyle[];
 type TextStyleProp = TextStyle | TextStyle[];
@@ -52,6 +52,11 @@ export interface IModalProps {
   isVisible: boolean;
   onClose: () => void;
   modalStyle?: ViewStyleProp;
+  transparent?: ModalProps['transparent'];
+  animationType?: ModalProps['animationType'];
+  statusBarTranslucent?: ModalProps['statusBarTranslucent'];
+  onShow?: ModalProps['onShow'];
+  onDismiss?: ModalProps['onDismiss'];
 }
 
 type ExtendableModalProps = Omit<IModalProps, 'modalStyle'>;
@@ -63,4 +68,10 @@ export interface IImagePickerModalProps extends ExtendableModalProps {
 
 export interface IRemoveImageModalProps extends ExtendableModalProps {
   onRemoveImage: () => void;
+}
+
+export interface IAlertModalProps extends ExtendableModalProps {
+  title: string;
+  message?: string;
+  buttons: AlertButton[];
 }

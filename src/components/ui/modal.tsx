@@ -5,9 +5,27 @@ import { WIDTH_FOR_WEB } from '@/constants';
 
 const { width, height } = Dimensions.get('window');
 
-export const Modal: React.FC<PropsWithChildren<IModalProps>> = ({ isVisible, onClose, children, modalStyle }) => {
+export const Modal: React.FC<PropsWithChildren<IModalProps>> = ({
+  isVisible,
+  animationType,
+  onDismiss,
+  onClose,
+  onShow,
+  statusBarTranslucent,
+  transparent,
+  children,
+  modalStyle,
+}) => {
   return (
-    <RN_Modal visible={isVisible} transparent={true} animationType='fade' onRequestClose={onClose}>
+    <RN_Modal
+      visible={isVisible}
+      transparent={transparent ?? true}
+      animationType={animationType ?? 'fade'}
+      statusBarTranslucent={statusBarTranslucent ?? true}
+      onDismiss={onDismiss}
+      onShow={onShow}
+      onRequestClose={onClose}
+    >
       <View style={[styles.modal, modalStyle]}>{children}</View>
     </RN_Modal>
   );

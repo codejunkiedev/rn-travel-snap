@@ -24,8 +24,6 @@ export const RemoveImageModal: React.FC<IRemoveImageModalProps> = ({ isVisible, 
 
 const styles = StyleSheet.create({
   modal: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.3)',
     justifyContent: 'flex-end',
   },
   modalContent: {

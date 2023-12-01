@@ -1,3 +1,5 @@
+import { isDeviceWeb } from '@/constants';
+
 export enum FONT_FAMILY {
   POPPINS_BOLD = 'Poppins-Bold',
   POPPINS_BOLD_ITALIC = 'Poppins-BoldItalic',
@@ -8,14 +10,15 @@ export enum FONT_FAMILY {
 }
 
 export enum FONT_SIZE {
-  EXTRA_SMALL = 12,
-  SMALL = 14,
-  MEDIUM = 16,
-  LARGE = 18,
-  EXTRA_LARGE = 20,
-  SUBTITLE = 24,
-  TITLE = 28,
-  HEADER = 32,
+  EXTRA_SMALL = isDeviceWeb ? 10 : 12,
+  SMALL = isDeviceWeb ? 12 : 14,
+  MEDIUM = isDeviceWeb ? 14 : 16,
+  LARGE = isDeviceWeb ? 16 : 18,
+  EXTRA_LARGE = isDeviceWeb ? 18 : 20,
+  SUBTITLE = isDeviceWeb ? 22 : 24,
+  TITLE = isDeviceWeb ? 26 : 28,
+  SUBHEADER = isDeviceWeb ? 28 : 30,
+  HEADER = isDeviceWeb ? 30 : 32,
 }
 
 export enum FONT_WEIGHT {

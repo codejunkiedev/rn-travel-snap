@@ -1,5 +1,5 @@
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import { IUserImagePickerProps } from '@/interfaces';
 import { Avatar } from './ui';
 import { Image } from 'expo-image';
@@ -7,6 +7,7 @@ import { IMAGES } from '@/constants';
 import { pickImageFromCamera, pickImageFromLibrary } from '@/helpers/image-picker';
 import { COLORS } from '@/typography';
 import { ImagePickerModal, RemoveImageModal } from './modals';
+import { useModal } from '@/hooks';
 
 export const UserImagePicker: React.FC<IUserImagePickerProps> = ({
   imageUri,
@@ -15,8 +16,8 @@ export const UserImagePicker: React.FC<IUserImagePickerProps> = ({
   containerStyle,
   disabled,
 }) => {
-  const [showModal1, setShowModal1] = useState<boolean>(false);
-  const [showModal2, setShowModal2] = useState<boolean>(false);
+  const [showModal1, openModal1, closeModal1] = useModal();
+  const [showModal2, openModal2, closeModal2] = useModal();
 
   let component = null;
 
@@ -28,22 +29,19 @@ export const UserImagePicker: React.FC<IUserImagePickerProps> = ({
     component = <Image source={IMAGES.USER} style={{ flex: 1 }} />;
   }
 
-  const closeModal1 = () => setShowModal1(false);
-  const closeModal2 = () => setShowModal2(false);
-
   const handlePickImageFromLibrary = async () => {
-    closeModal1();
     const result = await pickImageFromLibrary();
     if (result) {
       onImageSelected?.(result);
+      closeModal1();
     }
   };
 
   const handlePickImageFromCamera = async () => {
-    closeModal1();
     const result = await pickImageFromCamera();
     if (result) {
       onImageSelected?.(result);
+      closeModal1();
     }
   };
 
@@ -54,9 +52,9 @@ export const UserImagePicker: React.FC<IUserImagePickerProps> = ({
 
   const handleOnPress = () => {
     if (imageUri) {
-      setShowModal2(true);
+      openModal2();
     } else {
-      setShowModal1(true);
+      openModal1();
     }
   };
 
@@ -69,7 +67,7 @@ export const UserImagePicker: React.FC<IUserImagePickerProps> = ({
         isVisible={showModal1}
         onPressCamera={handlePickImageFromCamera}
         onPressGallery={handlePickImageFromLibrary}
-        onClose={() => setShowModal1(false)}
+        onClose={closeModal1}
       />
       <RemoveImageModal isVisible={showModal2} onClose={closeModal2} onRemoveImage={handleRemoveImage} />
     </Fragment>
