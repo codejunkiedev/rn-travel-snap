@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
       web: {
         width: WIDTH_FOR_WEB,
         height: height,
+        alignSelf: 'center',
       },
       default: {
         height: height,
