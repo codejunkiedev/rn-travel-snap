@@ -6,7 +6,12 @@ import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 import { Button } from '../ui';
 import { Entypo } from '@expo/vector-icons';
 
-const ImagePickerModal: React.FC<IImagePickerModalProps> = ({ isVisible, onClose, onPressCamera, onPressGallery }) => {
+export const ImagePickerModal: React.FC<IImagePickerModalProps> = ({
+  isVisible,
+  onClose,
+  onPressCamera,
+  onPressGallery,
+}) => {
   return (
     <Modal modalStyle={styles.modal} isVisible={isVisible} onClose={onClose}>
       <View style={styles.modalContent}>
@@ -26,8 +31,6 @@ const ImagePickerModal: React.FC<IImagePickerModalProps> = ({ isVisible, onClose
     </Modal>
   );
 };
-
-export default ImagePickerModal;
 
 const styles = StyleSheet.create({
   modal: {

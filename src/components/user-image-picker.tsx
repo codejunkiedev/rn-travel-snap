@@ -6,8 +6,7 @@ import { Image } from 'expo-image';
 import { IMAGES } from '@/constants';
 import { pickImageFromCamera, pickImageFromLibrary } from '@/helpers/image-picker';
 import { COLORS } from '@/typography';
-import ImagePickerModal from './modals/image-picker-modal';
-import RemoveImageModal from './modals/remove-image-modal';
+import { ImagePickerModal, RemoveImageModal } from './modals';
 
 export const UserImagePicker: React.FC<IUserImagePickerProps> = ({
   imageUri,

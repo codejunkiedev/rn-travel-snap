@@ -6,7 +6,7 @@ import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 import { Button } from '../ui';
 import { MaterialIcons } from '@expo/vector-icons';
 
-const RemoveImageModal: React.FC<IRemoveImageModalProps> = ({ isVisible, onClose, onRemoveImage }) => {
+export const RemoveImageModal: React.FC<IRemoveImageModalProps> = ({ isVisible, onClose, onRemoveImage }) => {
   return (
     <Modal modalStyle={styles.modal} isVisible={isVisible} onClose={onClose}>
       <View style={styles.modalContent}>
@@ -22,8 +22,6 @@ const RemoveImageModal: React.FC<IRemoveImageModalProps> = ({ isVisible, onClose
     </Modal>
   );
 };
-
-export default RemoveImageModal;
 
 const styles = StyleSheet.create({
   modal: {
