@@ -27,14 +27,14 @@ export const UserImagePicker: React.FC<IUserImagePickerProps> = ({
   const handlePickImageFromLibrary = async () => {
     const result = await pickImageFromLibrary();
     if (result) {
-      onImageSelected(result);
+      onImageSelected?.(result);
     }
   };
 
   const handlePickImageFromCamera = async () => {
     const result = await pickImageFromCamera();
     if (result) {
-      onImageSelected(result);
+      onImageSelected?.(result);
     }
   };
 
@@ -48,7 +48,7 @@ export const UserImagePicker: React.FC<IUserImagePickerProps> = ({
         },
         {
           text: 'Remove',
-          onPress: () => onImageSelected(''),
+          onPress: () => onImageSelected?.(''),
           style: 'destructive',
         },
       ]);
@@ -87,7 +87,6 @@ const styles = StyleSheet.create({
     width: 120,
     borderRadius: 100,
     alignSelf: 'center',
-    marginBottom: 20,
     overflow: 'hidden',
     elevation: 5,
     shadowColor: COLORS.BLACK,

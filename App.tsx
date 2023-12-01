@@ -40,7 +40,13 @@ export default function App() {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <AppNavigation />
-            <StatusBar style='light' backgroundColor={COLORS.PRIMARY} />
+            <StatusBar
+              style={Platform.select({
+                android: 'light',
+                default: 'auto',
+              })}
+              backgroundColor={COLORS.PRIMARY}
+            />
           </PersistGate>
         </Provider>
       </SafeAreaProvider>

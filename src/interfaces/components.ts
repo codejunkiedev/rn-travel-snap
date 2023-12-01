@@ -43,7 +43,7 @@ export interface IAvatarProps {
 export interface IUserImagePickerProps {
   imageUri: string;
   name: string;
-  onImageSelected: (imageUri: string) => void;
+  onImageSelected?: (imageUri: string) => void;
   containerStyle?: ViewStyleProp;
   disabled?: boolean;
 }

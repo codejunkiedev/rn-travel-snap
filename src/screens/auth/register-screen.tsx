@@ -45,6 +45,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, route }) =>
             name={formik.values.name}
             imageUri={profilePicture}
             onImageSelected={(uri) => setProfilePicture(uri)}
+            containerStyle={{ marginBottom: 20 }}
           />
           <LabeledInput
             label='Name'
