@@ -1,6 +1,7 @@
 import { StyleSheet, Modal as RN_Modal, View, Platform, Dimensions } from 'react-native';
 import React, { PropsWithChildren } from 'react';
 import { IModalProps } from '@/interfaces';
+import { WIDTH_FOR_WEB } from '@/constants';
 
 const { width, height } = Dimensions.get('window');
 
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
     ...Platform.select({
       web: {
-        width: 400,
+        width: WIDTH_FOR_WEB,
         height: height,
       },
       default: {

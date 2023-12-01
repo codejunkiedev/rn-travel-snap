@@ -9,8 +9,7 @@ import { COLORS, FONT_FAMILY } from '@/typography';
 import { Provider } from 'react-redux';
 import { persistor, store } from '@/redux';
 import { PersistGate } from 'redux-persist/integration/react';
-
-const { height, width } = Dimensions.get('window');
+import { Wrapper } from '@/components/ui/wrapper';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -39,7 +38,9 @@ export default function App() {
       <SafeAreaProvider>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-            <AppNavigation />
+            <Wrapper>
+              <AppNavigation />
+            </Wrapper>
             <StatusBar
               style={Platform.select({
                 android: 'light',
@@ -56,16 +57,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    ...Platform.select({
-      web: {
-        width: 400,
-        height: height,
-      },
-      default: {
-        height: height,
-        width: width,
-        flex: 1,
-      },
-    }),
+    flex: 1,
   },
 });

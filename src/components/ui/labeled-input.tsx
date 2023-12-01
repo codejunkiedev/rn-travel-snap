@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { Platform, StyleSheet, Text, TextInput, View } from 'react-native';
 import React, { useState } from 'react';
 import { ILabeledInputProps } from '@/interfaces';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
@@ -43,7 +43,8 @@ export const LabeledInput: React.FC<ILabeledInputProps> = ({
         value={value}
         onChangeText={onChangeText}
         keyboardType={keyboardType ?? 'default'}
-        style={[styles.input, inputStyle]}
+        // required to remove the outline on web
+        style={[styles.input, Platform.OS === 'web' && { outline: 'none' }, inputStyle]}
         onFocus={handleOnFocus}
         onBlur={handleOnBlur}
         autoCapitalize={autoCapitalize ?? 'none'}
@@ -51,7 +52,7 @@ export const LabeledInput: React.FC<ILabeledInputProps> = ({
         keyboardAppearance={keyboardAppearance ?? 'default'}
         textContentType={textContentType ?? 'none'}
       />
-      {error && touched && <Text style={[styles.error]}>{error}</Text>}
+      {error && touched && <Text style={styles.error}>{error}</Text>}
     </View>
   );
 };
