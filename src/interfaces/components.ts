@@ -47,3 +47,20 @@ export interface IUserImagePickerProps {
   containerStyle?: ViewStyleProp;
   disabled?: boolean;
 }
+
+export interface IModalProps {
+  isVisible: boolean;
+  onClose: () => void;
+  modalStyle?: ViewStyleProp;
+}
+
+type ExtendableModalProps = Omit<IModalProps, 'modalStyle'>;
+
+export interface IImagePickerModalProps extends ExtendableModalProps {
+  onPressCamera: () => void;
+  onPressGallery: () => void;
+}
+
+export interface IRemoveImageModalProps extends ExtendableModalProps {
+  onRemoveImage: () => void;
+}
