@@ -4,15 +4,13 @@ import { IModalProps } from '@/interfaces';
 
 const { width, height } = Dimensions.get('window');
 
-const Modal: React.FC<PropsWithChildren<IModalProps>> = ({ isVisible, onClose, children, modalStyle }) => {
+export const Modal: React.FC<PropsWithChildren<IModalProps>> = ({ isVisible, onClose, children, modalStyle }) => {
   return (
     <RN_Modal visible={isVisible} transparent={true} animationType='fade' onRequestClose={onClose}>
       <View style={[styles.modal, modalStyle]}>{children}</View>
     </RN_Modal>
   );
 };
-
-export default Modal;
 
 const styles = StyleSheet.create({
   modal: {

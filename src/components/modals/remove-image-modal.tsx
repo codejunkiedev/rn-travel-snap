@@ -1,9 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
-import Modal from '../ui/modal';
 import { IRemoveImageModalProps } from '@/interfaces';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
-import { Button } from '../ui';
+import { Button, Modal } from '../ui';
 import { MaterialIcons } from '@expo/vector-icons';
 
 export const RemoveImageModal: React.FC<IRemoveImageModalProps> = ({ isVisible, onClose, onRemoveImage }) => {
