@@ -43,8 +43,7 @@ export const LabeledInput: React.FC<ILabeledInputProps> = ({
         value={value}
         onChangeText={onChangeText}
         keyboardType={keyboardType ?? 'default'}
-        // required to remove the outline on web
-        style={[styles.input, Platform.OS === 'web' && { outline: 'none' }, inputStyle]}
+        style={[styles.input, Platform.OS === 'web' && webStyles, inputStyle]}
         onFocus={handleOnFocus}
         onBlur={handleOnBlur}
         autoCapitalize={autoCapitalize ?? 'none'}
@@ -94,3 +93,9 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
   },
 });
+
+// required for web
+const webStyles: any = {
+  outline: 'none',
+  placeholderTextColor: COLORS.LIGHT,
+};
