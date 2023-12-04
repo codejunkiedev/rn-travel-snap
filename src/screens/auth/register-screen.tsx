@@ -8,7 +8,11 @@ import { useLoading } from '@/hooks';
 import { Button, LabeledInput } from '@/components/ui';
 import { UserImagePicker } from '@/components';
 import { useFormik } from 'formik';
-
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { FIREBASE_AUTH, FIRESTORE_DB } from '@/services';
+import { FIREBASE_STORAGE } from '@/services';
+import {ref,uploadBytes,getDownloadURL, getBlob, uploadString,} from "firebase/storage"
+import { doc, setDoc } from 'firebase/firestore';
 const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, route }) => {
   const { email, password } = route.params;
 
@@ -30,11 +34,31 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, route }) =>
     navigation.navigate(AuthScreens.LOGIN);
   };
 
-  const handleSignUp = (payload: ISignUpForm) => {
+  const handleSignUp = async ({email,password,name}: ISignUpForm) => {
+   try {
     setLoading(true);
-    console.log(payload);
-    // navigateToLogin();
+   
+    const {user}  = await createUserWithEmailAndPassword(FIREBASE_AUTH,email,password)
+    const fileRef = ref(FIREBASE_STORAGE,`profilePictures/${user?.uid}`)
+    await uploadString(fileRef,profilePicture,"data_url")
+    const downloadUrlRes = await getDownloadURL(fileRef)
+    const userDoc = {
+      uid: user.uid,
+      email,
+      name,
+      profilePicURL: downloadUrlRes,
+      posts: [],
+      createdAt: Date.now(),
+    };
+    await setDoc(doc(FIRESTORE_DB, "users", user.uid), userDoc);
+
+    navigateToLogin();
     setLoading(false);
+   } catch (error) {
+    console.log(error)
+   }finally{
+    setLoading(false)
+   }
   };
 
   return (

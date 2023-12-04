@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { ProfileScreenProps } from '@/interfaces';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
@@ -9,15 +9,30 @@ import { AlertModal } from '@/components/modals';
 import { useDispatch } from 'react-redux';
 import { removeUser } from '@/redux/app-state.slice';
 import { useModal } from '@/hooks';
+import { onAuthStateChanged } from 'firebase/auth';
+import { FIREBASE_AUTH, FIRESTORE_DB } from '@/services';
+import { getDoc, doc } from 'firebase/firestore';
 
 const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
-  const name = 'John Doe';
-  const email = 'johndoe@gmail.com';
-  const imageUri = '';
+  const [name,setName] = useState("");
+  const [email,setEmail] = useState("");
+  const [imageUri,setImageUri] = useState("");
 
   const [showModal, openModal, closeModal] = useModal();
 
   const dispatch = useDispatch();
+  useEffect(()=>{
+    onAuthStateChanged(FIREBASE_AUTH,async (user)=>{
+      if(user?.uid){
+        const userDocRef = await getDoc(doc(FIRESTORE_DB, "users", user?.uid));
+      const userData = userDocRef.data()
+      console.log(userData)
+      setName(userData?.name)
+      setEmail(userData?.email)
+      setImageUri(userData?.profilePicURL)
+      }
+    })
+  },[])
 
   const handleLogout = () => {
     closeModal();

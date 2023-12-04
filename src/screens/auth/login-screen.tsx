@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LoginScreenProps, ILoginForm } from '@/interfaces';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
@@ -10,23 +10,41 @@ import { Button, LabeledInput } from '@/components/ui';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { updateUser } from '@/redux/app-state.slice';
+import { FIREBASE_AUTH, FIRESTORE_DB } from '@/services';
+import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, route }) => {
   const [loading, setLoading] = useLoading();
 
   const dispatch = useDispatch();
 
+  const auth = FIREBASE_AUTH;
+
   const formik = useFormik({
     initialValues: { email: '', password: '' },
     validationSchema: validationSchemaSignIn,
     onSubmit: (values) => handleLogin(values),
   });
+  
+  useEffect(()=>{
+    onAuthStateChanged(FIREBASE_AUTH,(user)=>{
+      console.log("user ----> ",user)
+    })
+  },[])
 
-  const handleLogin = (payload: ILoginForm) => {
+  const handleLogin = async  ({email,password}: ILoginForm) => {
     try {
       setLoading(true);
-      console.log('payload', payload);
-      dispatch(updateUser({ email: payload.email, name: 'John Doe' }));
+      // console.log('payload', payload);
+      // console.log(payload)
+      const response = await signInWithEmailAndPassword(auth,email,password);
+      // const response = c
+      console.log("this is response -----> ",response)
+      const userDocRef = await getDoc(doc(FIRESTORE_DB, "users", response.user.uid));
+      const userData = userDocRef.data()
+      // console.log("this is user ----> ",userDocRef.data())
+      dispatch(updateUser({ email, name: userData?.name }));
     } catch (e) {
       console.warn(e);
     } finally {
