@@ -1,69 +1,32 @@
 import { FlatList, StyleSheet, Text, TouchableOpacity, View, Dimensions, Platform } from 'react-native';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment } from 'react';
 import { ProfileScreenProps } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 import { UserImagePicker } from '@/components';
 import { Ionicons } from '@expo/vector-icons';
 import { AlertModal } from '@/components/modals';
-import { useDispatch } from 'react-redux';
 import { removeUser } from '@/redux/app-state.slice';
 import { useModal } from '@/hooks';
 import { Image } from 'expo-image';
-import { WIDTH_FOR_WEB } from '@/constants';
+import { PROFILE_SCREEN_IMAGES, WIDTH_FOR_WEB } from '@/constants';
+import { useAppDispatch, useAppSelector } from '@/redux';
+import { signOut } from 'firebase/auth';
+import { FIREBASE_AUTH } from '@/services';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-const images = [
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-];
-import { onAuthStateChanged } from 'firebase/auth';
-import { FIREBASE_AUTH, FIRESTORE_DB } from '@/services';
-import { getDoc, doc } from 'firebase/firestore';
-
 const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [imageUri, setImageUri] = useState('');
-
   const [showModal, openModal, closeModal] = useModal();
   const insets = useSafeAreaInsets();
 
-  const dispatch = useDispatch();
-  useEffect(() => {
-    onAuthStateChanged(FIREBASE_AUTH, async (user) => {
-      if (user?.uid) {
-        const userDocRef = await getDoc(doc(FIRESTORE_DB, 'users', user?.uid));
-        const userData = userDocRef.data();
-        console.log(userData);
-        setName(userData?.name);
-        setEmail(userData?.email);
-        setImageUri(userData?.profilePicURL);
-      }
-    });
-  }, []);
+  const user = useAppSelector((state) => state.appState.user);
 
-  const handleLogout = () => {
+  const dispatch = useAppDispatch();
+
+  const handleLogout = async () => {
     closeModal();
+    await signOut(FIREBASE_AUTH);
     dispatch(removeUser());
   };
 
@@ -73,17 +36,22 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
     <Fragment>
       <View style={[styles.root, { paddingTop: insets.top }]}>
         <View style={styles.infoContainer}>
-          <UserImagePicker imageUri={imageUri} name={name} disabled containerStyle={styles.image} />
+          <UserImagePicker
+            imageUri={user?.profilePicURL || ''}
+            name={user?.name || 'John Doe'}
+            disabled
+            containerStyle={styles.image}
+          />
           <View style={styles.info}>
-            <Text style={styles.name}>{name}</Text>
-            <Text style={styles.email}>{email}</Text>
+            <Text style={styles.name}>{user?.name || 'John Doe'}</Text>
+            <Text style={styles.email}>{user?.email || 'johndoe@gmail.com'}</Text>
           </View>
           <TouchableOpacity onPress={openModal}>
             <Ionicons name='settings' size={24} color={COLORS.SECONDARY} />
           </TouchableOpacity>
         </View>
         <FlatList
-          data={images}
+          data={PROFILE_SCREEN_IMAGES}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={handleZoomImage} style={styles.post} activeOpacity={0.8}>

@@ -10,6 +10,7 @@ import { Provider } from 'react-redux';
 import { persistor, store } from '@/redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Wrapper } from '@/components/ui/wrapper';
+import FlashMessage from 'react-native-flash-message';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -40,6 +41,7 @@ export default function App() {
           <PersistGate loading={null} persistor={persistor}>
             <Wrapper>
               <AppNavigation />
+              <FlashMessage position={'bottom'} animated floating duration={3000} hideOnPress />
             </Wrapper>
             <StatusBar
               style={Platform.select({

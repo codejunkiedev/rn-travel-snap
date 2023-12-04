@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { LoginScreenProps, ILoginForm } from '@/interfaces';
+import { LoginScreenProps, ILoginForm, IUser } from '@/interfaces';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import { useLoading } from '@/hooks';
@@ -26,25 +26,25 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, route }) => {
     validationSchema: validationSchemaSignIn,
     onSubmit: (values) => handleLogin(values),
   });
-  
-  useEffect(()=>{
-    onAuthStateChanged(FIREBASE_AUTH,(user)=>{
-      console.log("user ----> ",user)
-    })
-  },[])
 
-  const handleLogin = async  ({email,password}: ILoginForm) => {
+  useEffect(() => {
+    onAuthStateChanged(FIREBASE_AUTH, (user) => {
+      console.log('user ----> ', user);
+    });
+  }, []);
+
+  const handleLogin = async ({ email, password }: ILoginForm) => {
     try {
       setLoading(true);
       // console.log('payload', payload);
       // console.log(payload)
-      const response = await signInWithEmailAndPassword(auth,email,password);
+      const response = await signInWithEmailAndPassword(auth, email, password);
       // const response = c
-      console.log("this is response -----> ",response)
-      const userDocRef = await getDoc(doc(FIRESTORE_DB, "users", response.user.uid));
-      const userData = userDocRef.data()
+      console.log('this is response -----> ', response);
+      const userDocRef = await getDoc(doc(FIRESTORE_DB, 'users', response.user.uid));
+      const userData = userDocRef.data() as IUser;
       // console.log("this is user ----> ",userDocRef.data())
-      dispatch(updateUser({ email, name: userData?.name }));
+      dispatch(updateUser(userData));
     } catch (e) {
       console.warn(e);
     } finally {
