@@ -10,10 +10,13 @@ import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { updateUser } from '@/redux/app-state.slice';
 import { FIREBASE_AUTH, FIRESTORE_DB } from '@/services';
-import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
+import { successFlash, warningFlash } from '@/helpers/flash-message';
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, route }) => {
+  const credentials = route.params;
+
   const [loading, setLoading] = useLoading();
 
   const dispatch = useDispatch();
@@ -21,16 +24,17 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, route }) => {
   const auth = FIREBASE_AUTH;
 
   const formik = useFormik({
-    initialValues: { email: '', password: '' },
+    initialValues: { email: credentials.email || '', password: credentials.password || '' },
     validationSchema: validationSchemaSignIn,
     onSubmit: (values) => handleLogin(values),
   });
 
   useEffect(() => {
-    onAuthStateChanged(FIREBASE_AUTH, (user) => {
-      console.log('user ----> ', user);
-    });
-  }, []);
+    if (credentials.email && credentials.password) {
+      formik.setFieldValue('email', credentials.email);
+      formik.setFieldValue('password', credentials.password);
+    }
+  }, [credentials.email, credentials.password]);
 
   const handleLogin = async ({ email, password }: ILoginForm) => {
     try {
@@ -43,9 +47,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, route }) => {
       const userDocRef = await getDoc(doc(FIRESTORE_DB, 'users', response.user.uid));
       const userData = userDocRef.data() as IUser;
       // console.log("this is user ----> ",userDocRef.data())
+      successFlash('Login successful');
       dispatch(updateUser(userData));
-    } catch (e) {
-      console.warn(e);
+    } catch (e: any) {
+      console.warn('Login', e.message ?? 'Something went wrong');
+      warningFlash('Login failed', e.message ?? 'Something went wrong');
     } finally {
       setLoading(false);
     }

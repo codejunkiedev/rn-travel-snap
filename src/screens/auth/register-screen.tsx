@@ -11,8 +11,9 @@ import { useFormik } from 'formik';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { FIREBASE_AUTH, FIRESTORE_DB } from '@/services';
 import { FIREBASE_STORAGE } from '@/services';
-import {ref,uploadBytes,getDownloadURL, getBlob, uploadString,} from "firebase/storage"
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { doc, setDoc } from 'firebase/firestore';
+import { successFlash, warningFlash } from '@/helpers/flash-message';
 
 const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, route }) => {
   const { email, password } = route.params;
@@ -32,67 +33,65 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, route }) =>
   });
 
   const navigateToLogin = () => {
-    navigation.navigate(AuthScreens.LOGIN);
+    navigation.navigate(AuthScreens.LOGIN, {
+      email: formik.values.email,
+      password: formik.values.password,
+    });
   };
 
-  const handleSignUp = async ({email,password,name}: ISignUpForm) => {
-   try {
-    setLoading(true);
-   
-    const {user}  = await createUserWithEmailAndPassword(FIREBASE_AUTH,email,password)
-    if(profilePicture){
-      const fileRef = ref(FIREBASE_STORAGE,`profilePictures/${user?.uid}`)
-      // console.log(imageBase64)
-      const blob:Blob = await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.onload = function() {
-          resolve(xhr.response);
-        };
-        xhr.onerror = function() {
-          reject(new TypeError("Network request failed"));
-        };
-        xhr.responseType = "blob";
-        xhr.open("GET", profilePicture, true);
-        xhr.send(null);
-      });
-  
-      var mimeString = profilePicture
-        .split(",")[0]
-        .split(":")[1]
-        .split(";")[0];
-      await uploadBytes(fileRef,blob, { contentType: mimeString })
-      console.log("upload after")
-      const downloadUrlRes = await getDownloadURL(fileRef)
-      const userDoc = {
-        uid: user.uid,
-        email,
-        name,
-        profilePicURL: downloadUrlRes,
-        posts: [],
-        createdAt: Date.now(),
-      };
-      await setDoc(doc(FIRESTORE_DB, "users", user.uid), userDoc);
-    }else{
-      const userDoc = {
-        uid: user.uid,
-        email,
-        name,
-        profilePicURL:profilePicture,
-        posts: [],
-        createdAt: Date.now(),
-      };
-      await setDoc(doc(FIRESTORE_DB, "users", user.uid), userDoc);
-    }
-   
-   
+  const handleSignUp = async ({ email, password, name }: ISignUpForm) => {
+    try {
+      setLoading(true);
 
-    navigateToLogin();
-    setLoading(false);
-   } catch (error) {
-    console.log(error)
-   }finally{
-    setLoading(false)
-   }
+      const { user } = await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
+      if (profilePicture) {
+        const fileRef = ref(FIREBASE_STORAGE, `profilePictures/${user?.uid}`);
+        // console.log(imageBase64)
+        const blob: Blob = await new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.onload = function () {
+            resolve(xhr.response);
+          };
+          xhr.onerror = function () {
+            reject(new TypeError('Network request failed'));
+          };
+          xhr.responseType = 'blob';
+          xhr.open('GET', profilePicture, true);
+          xhr.send(null);
+        });
+
+        var mimeString = profilePicture.split(',')[0].split(':')[1].split(';')[0];
+        await uploadBytes(fileRef, blob, { contentType: mimeString });
+        console.log('upload after');
+        const downloadUrlRes = await getDownloadURL(fileRef);
+        const userDoc = {
+          uid: user.uid,
+          email,
+          name,
+          profilePicURL: downloadUrlRes,
+          posts: [],
+          createdAt: Date.now(),
+        };
+        await setDoc(doc(FIRESTORE_DB, 'users', user.uid), userDoc);
+      } else {
+        const userDoc = {
+          uid: user.uid,
+          email,
+          name,
+          profilePicURL: profilePicture,
+          posts: [],
+          createdAt: Date.now(),
+        };
+        await setDoc(doc(FIRESTORE_DB, 'users', user.uid), userDoc);
+      }
+      successFlash('SignUp successful');
+      navigateToLogin();
+    } catch (error: any) {
+      console.warn('SignUp', error.message ?? 'Something went wrong');
+      warningFlash('SignUp failed', error.message ?? 'Something went wrong');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

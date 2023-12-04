@@ -14,7 +14,7 @@ const AuthStack = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name={AuthScreens.LOGIN} component={LoginScreen} />
+      <Stack.Screen name={AuthScreens.LOGIN} initialParams={{ email: '', password: '' }} component={LoginScreen} />
       <Stack.Screen
         name={AuthScreens.REGISTER}
         initialParams={{ email: '', password: '' }}
