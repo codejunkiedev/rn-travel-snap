@@ -39,19 +39,16 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, route }) => {
   const handleLogin = async ({ email, password }: ILoginForm) => {
     try {
       setLoading(true);
-      // console.log('payload', payload);
-      // console.log(payload)
       const response = await signInWithEmailAndPassword(auth, email, password);
-      // const response = c
-      console.log('this is response -----> ', response);
+      // console.log('response', response);
       const userDocRef = await getDoc(doc(FIRESTORE_DB, 'users', response.user.uid));
       const userData = userDocRef.data() as IUser;
-      // console.log("this is user ----> ",userDocRef.data())
-      successFlash('Login successful');
+      // console.log('user', userDocRef.data());
       dispatch(updateUser(userData));
+      successFlash('Login successful');
     } catch (e: any) {
       console.warn('Login', e.message ?? 'Something went wrong');
-      warningFlash('Login failed', e.message ?? 'Something went wrong');
+      warningFlash('Login failed');
     } finally {
       setLoading(false);
     }

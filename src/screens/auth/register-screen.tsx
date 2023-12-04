@@ -62,7 +62,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, route }) =>
 
         var mimeString = profilePicture.split(',')[0].split(':')[1].split(';')[0];
         await uploadBytes(fileRef, blob, { contentType: mimeString });
-        console.log('upload after');
+        // console.log('upload after');
         const downloadUrlRes = await getDownloadURL(fileRef);
         const userDoc = {
           uid: user.uid,
@@ -88,7 +88,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, route }) =>
       navigateToLogin();
     } catch (error: any) {
       console.warn('SignUp', error.message ?? 'Something went wrong');
-      warningFlash('SignUp failed', error.message ?? 'Something went wrong');
+      warningFlash('SignUp failed');
     } finally {
       setLoading(false);
     }
