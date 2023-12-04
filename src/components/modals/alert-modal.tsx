@@ -16,12 +16,12 @@ export const AlertModal: React.FC<IAlertModalProps> = ({ isVisible, onClose, but
               key={index}
               onPress={() => button.onPress?.()}
               title={button.text ?? 'Button'}
-              mode='outlined'
+              mode='text'
               textStyle={[
                 styles.buttonText,
                 { color: button.style === 'destructive' ? COLORS.DANGER : COLORS.SECONDARY },
               ]}
-              buttonStyle={styles.button}
+              buttonStyle={[styles.button, { minWidth: `${100 / buttons.length}%` }]}
             />
           ))}
         </View>
@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.WHITE,
     justifyContent: 'space-between',
     padding: 20,
+    paddingBottom: 10,
     elevation: 5,
     borderRadius: 5,
   },
@@ -59,11 +60,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 10,
+    width: '100%',
   },
   button: {
     marginHorizontal: 0,
     marginVertical: 0,
-    borderWidth: 0,
   },
   buttonText: {
     fontSize: FONT_SIZE.LARGE,
