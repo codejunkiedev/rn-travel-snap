@@ -1,11 +1,10 @@
-import { StyleSheet } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text } from 'react-native';
+import React, { useEffect } from 'react';
 import { LoginScreenProps, ILoginForm, IUser } from '@/interfaces';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Image } from 'expo-image';
 import { useLoading } from '@/hooks';
-import { IMAGES, AuthScreens, validationSchemaSignIn } from '@/constants';
-import { COLORS } from '@/typography';
+import { AuthScreens, validationSchemaSignIn } from '@/constants';
+import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 import { Button, LabeledInput } from '@/components/ui';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
@@ -61,7 +60,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.root}>
-      <Image source={IMAGES.LOGO} style={styles.logo} />
+      <Text style={styles.logo}>Travel Snap</Text>
       <LabeledInput
         label='Email'
         placeholder='johndoe@gmail.com'
@@ -102,9 +101,15 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.BACKGROUND,
   },
   logo: {
-    height: 120,
-    width: 120,
+    width: '80%',
     alignSelf: 'center',
     marginBottom: 20,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    fontSize: FONT_SIZE.HEADER,
+    fontFamily: FONT_FAMILY.POPPINS_BOLD_ITALIC,
+    color: COLORS.PRIMARY,
+    textDecorationColor: COLORS.SECONDARY,
+    textDecorationLine: 'underline',
   },
 });
