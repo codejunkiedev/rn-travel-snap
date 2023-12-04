@@ -142,7 +142,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, route }) =>
             touched={formik.touched.confirmPassword}
           />
           <Button title='Sign Up' isLoading={loading} onPress={formik.handleSubmit} buttonStyle={{ marginTop: 10 }} />
-          <Button title='Back to Login' mode='outlined' isLoading={loading} onPress={navigateToLogin} />
+          <Button title='Back to Login' mode='outlined' onPress={navigateToLogin} />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

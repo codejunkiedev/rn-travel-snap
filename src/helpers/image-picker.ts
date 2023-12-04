@@ -37,7 +37,7 @@ export const pickImageFromLibrary = async (): Promise<string | null> => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
-      quality: 0,
+      quality: 0.5,
     });
     if (!result.canceled && result.assets.length > 0) {
       return result.assets[0].uri;
@@ -60,7 +60,7 @@ export const pickImageFromCamera = async (): Promise<string | null> => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
-      quality: 0,
+      quality: 0.5,
     });
     if (!result.canceled && result.assets.length > 0) {
       return result.assets[0].uri;
