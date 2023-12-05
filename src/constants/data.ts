@@ -1,90 +1,17 @@
 import { IPost } from '@/interfaces';
 
-export const PROFILE_SCREEN_DATA: IPost[] = [
-  // 'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  {
-    content: 'This is a test post #1',
-    imageURL:
-      'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
+export const PROFILE_SCREEN_DATA: IPost[] = Array.from({ length: 50 }, (_, i) => ({
+  content: `This is post ${i + 1}`,
+  imageURL: `https://loremflickr.com/${360 + i * 10}/${360 + i * 10}`,
+  user: {
+    name: `User ${i + 1}`,
+    email: `user${i + 1}@example.com`,
+    profilePicURL: `https://loremflickr.com/${100 + i * 10}/${100 + i * 10}`,
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+    uid: `user${i + 1}`,
   },
-  {
-    content: 'This is a test post #1',
-    imageURL:
-      'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  },
-  {
-    content: 'This is a test post #1',
-    imageURL:
-      'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  },
-  {
-    content: 'This is a test post #1',
-    imageURL:
-      'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  },
-  {
-    content: 'This is a test post #1',
-    imageURL:
-      'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  },
-  {
-    content: 'This is a test post #1',
-    imageURL:
-      'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  },
-  {
-    content: 'This is a test post #1',
-    imageURL:
-      'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  },
-  {
-    content: 'This is a test post #1',
-    imageURL:
-      'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  },
-  {
-    content: 'This is a test post #1',
-    imageURL:
-      'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  },
-  {
-    content: 'This is a test post #1',
-    imageURL:
-      'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  },
-  {
-    content: 'This is a test post #1',
-    imageURL:
-      'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  },
-  {
-    content: 'This is a test post #1',
-    imageURL:
-      'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  },
-  {
-    content: 'This is a test post #1',
-    imageURL:
-      'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  },
-  {
-    content: 'This is a test post #1',
-    imageURL:
-      'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  },
-  {
-    content: 'This is a test post #1',
-    imageURL:
-      'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  },
-  {
-    content: 'This is a test post #1',
-    imageURL:
-      'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  },
-  {
-    content: 'This is a test post #1',
-    imageURL:
-      'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  },
-];
+  createdAt: Date.now(),
+  updatedAt: Date.now(),
+  uid: `post${i + 1}`,
+}));

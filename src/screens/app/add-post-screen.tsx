@@ -3,12 +3,12 @@ import React, { Fragment, useState } from 'react';
 import { AddPostScreenProps, IPost } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS } from '@/typography';
-import { ImagePicker } from '@/components/image-picker';
 import { Button, LabeledInput } from '@/components/ui';
 import { useLoading, useModal } from '@/hooks';
 import { warningFlash } from '@/helpers/flash-message';
 import { AlertModal } from '@/components/modals';
 import { useAppSelector } from '@/redux';
+import { ImagePicker } from '@/components';
 
 const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
   const [content, setContent] = useState<string>('');
@@ -26,6 +26,11 @@ const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
       const payload: IPost = {
         content,
         imageURL: imageUri,
+        user: {
+          name: user?.name!,
+          profilePicURL: user?.profilePicURL!,
+          email: user?.email!,
+        },
       };
     } catch (error) {
       console.warn('handlePost error', error);

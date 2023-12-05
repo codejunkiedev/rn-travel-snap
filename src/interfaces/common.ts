@@ -7,11 +7,11 @@ interface FirebaseResource {
 export interface IPost extends FirebaseResource {
   content: string;
   imageURL: string;
+  user: IUser;
 }
 
 export interface IUser extends FirebaseResource {
   name: string;
   email: string;
-  posts: IPost[];
   profilePicURL: string;
 }

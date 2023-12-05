@@ -105,3 +105,7 @@ export interface IFABProps {
 export interface IPostDetailModalProps extends ExtendableModalProps {
   selectedPost: IPost | null;
 }
+
+export interface IFeedPostItemProps {
+  post: IPost;
+}
