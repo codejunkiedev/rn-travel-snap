@@ -109,3 +109,8 @@ export interface IPostDetailModalProps extends ExtendableModalProps {
 export interface IFeedPostItemProps {
   post: IPost;
 }
+
+export interface IProfilePostItemProps {
+  post: IPost;
+  onPress: (post: IPost) => void;
+}
