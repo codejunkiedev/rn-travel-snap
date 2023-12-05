@@ -1,7 +1,8 @@
-import { Platform, StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import React, { useMemo, useState } from 'react';
 import { ILabeledInputProps } from '@/interfaces';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
+import { isDeviceWeb } from '@/constants';
 
 export const LabeledInput: React.FC<ILabeledInputProps> = ({
   label,
@@ -55,7 +56,7 @@ export const LabeledInput: React.FC<ILabeledInputProps> = ({
         value={value}
         onChangeText={onChangeText}
         keyboardType={keyboardType ?? 'default'}
-        style={[styles.input, Platform.OS === 'web' && webStyles, inputStyle]}
+        style={[styles.input, isDeviceWeb && webStyles, inputStyle]}
         onFocus={handleOnFocus}
         onBlur={handleOnBlur}
         autoCapitalize={autoCapitalize ?? 'none'}

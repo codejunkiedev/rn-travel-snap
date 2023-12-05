@@ -1,12 +1,12 @@
 import React, { Fragment, PropsWithChildren } from 'react';
-import { View, StyleSheet, Platform, Dimensions } from 'react-native';
-import { WIDTH_FOR_WEB } from '@/constants';
+import { View, StyleSheet, Dimensions } from 'react-native';
+import { WIDTH_FOR_WEB, isDeviceWeb } from '@/constants';
 import { COLORS } from '@/typography';
 
 const { height } = Dimensions.get('window');
 
 export const Wrapper: React.FC<PropsWithChildren> = ({ children }) => {
-  if (Platform.OS === 'web') {
+  if (isDeviceWeb) {
     return (
       <View style={styles.root}>
         <View style={styles.webWrapper}>{children}</View>
