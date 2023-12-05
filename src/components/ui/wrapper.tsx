@@ -2,10 +2,11 @@ import React, { Fragment, PropsWithChildren } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { WIDTH_FOR_WEB, isDeviceWeb } from '@/constants';
 import { COLORS } from '@/typography';
+import { IWrapperProps } from '@/interfaces';
 
 const { height } = Dimensions.get('window');
 
-export const Wrapper: React.FC<PropsWithChildren> = ({ children }) => {
+export const Wrapper: React.FC<PropsWithChildren<IWrapperProps>> = ({ children }) => {
   if (isDeviceWeb) {
     return (
       <View style={styles.root}>

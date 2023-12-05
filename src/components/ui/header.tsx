@@ -1,8 +1,9 @@
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { IHeaderProps } from '@/interfaces';
 
-export const Header = () => {
+export const Header: React.FC<IHeaderProps> = ({}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.appName}>Travel Snap</Text>
