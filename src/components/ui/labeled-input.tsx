@@ -70,7 +70,7 @@ export const LabeledInput: React.FC<ILabeledInputProps> = ({
         blurOnSubmit={blurOnSubmit ?? true}
         editable={editable ?? true}
         textAlign={textAlign ?? 'left'}
-        textAlignVertical={textAlignVertical ?? 'center'}
+        textAlignVertical={textAlignVertical ?? multiline ? 'top' : 'center'}
       />
       {showTextCounter && (
         <Text style={[styles.counter, isTextLimit && styles.counterError]}>
