@@ -1,6 +1,6 @@
 import AppNavigation from '@/navigation';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, Platform, Dimensions } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -9,8 +9,8 @@ import { COLORS, FONT_FAMILY } from '@/typography';
 import { Provider } from 'react-redux';
 import { persistor, store } from '@/redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { Wrapper } from '@/components/ui/wrapper';
 import FlashMessage from 'react-native-flash-message';
+import { Wrapper } from '@/components/ui';
 
 SplashScreen.preventAutoHideAsync();
 

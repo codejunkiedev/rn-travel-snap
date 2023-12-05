@@ -1,3 +1,4 @@
+import React from 'react';
 import type { ViewStyle, TextStyle, KeyboardType, TextInputProps, AlertButton, ModalProps } from 'react-native';
 
 type ViewStyleProp = ViewStyle | ViewStyle[];
@@ -18,6 +19,16 @@ export interface ILabeledInputProps {
   keyboardAppearance?: TextInputProps['keyboardAppearance'];
   autoCapitalize?: TextInputProps['autoCapitalize'];
   autoCorrect?: TextInputProps['autoCorrect'];
+  multiline?: TextInputProps['multiline'];
+  numberOfLines?: TextInputProps['numberOfLines'];
+  maxLength?: TextInputProps['maxLength'];
+  editable?: TextInputProps['editable'];
+  returnKeyType?: TextInputProps['returnKeyType'];
+  onSubmitEditing?: TextInputProps['onSubmitEditing'];
+  blurOnSubmit?: TextInputProps['blurOnSubmit'];
+  textAlign?: TextInputProps['textAlign'];
+  textAlignVertical?: TextInputProps['textAlignVertical'];
+  showTextCounter?: boolean;
 
   labelStyle?: TextStyle;
   inputStyle?: TextStyle;
@@ -43,6 +54,13 @@ export interface IAvatarProps {
 export interface IUserImagePickerProps {
   imageUri: string;
   name: string;
+  onImageSelected?: (imageUri: string) => void;
+  containerStyle?: ViewStyleProp;
+  disabled?: boolean;
+}
+
+export interface IImagePickerProps {
+  imageUri: string;
   onImageSelected?: (imageUri: string) => void;
   containerStyle?: ViewStyleProp;
   disabled?: boolean;
@@ -74,4 +92,10 @@ export interface IAlertModalProps extends ExtendableModalProps {
   title: string;
   message?: string;
   buttons: AlertButton[];
+}
+
+export interface IFABProps {
+  onPress: () => void;
+  icon: React.ReactNode;
+  style?: ViewStyleProp;
 }
