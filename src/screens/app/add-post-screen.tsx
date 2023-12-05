@@ -1,6 +1,6 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
 import React, { Fragment, useState } from 'react';
-import { AddPostScreenProps } from '@/interfaces';
+import { AddPostScreenProps, IPost } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS } from '@/typography';
 import { ImagePicker } from '@/components/image-picker';
@@ -23,6 +23,10 @@ const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
   const handlePost = async () => {
     try {
       setLoading(true);
+      const payload: IPost = {
+        content,
+        imageURL: imageUri,
+      };
     } catch (error) {
       console.warn('handlePost error', error);
       warningFlash('An error occurred while posting');

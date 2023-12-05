@@ -1,15 +1,15 @@
 import { FlatList, StyleSheet, Text, TouchableOpacity, View, Dimensions, Platform } from 'react-native';
-import React, { Fragment } from 'react';
-import { ProfileScreenProps } from '@/interfaces';
+import React, { Fragment, useState } from 'react';
+import { IPost, ProfileScreenProps } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 import { UserImagePicker } from '@/components';
 import { Ionicons } from '@expo/vector-icons';
-import { AlertModal } from '@/components/modals';
+import { AlertModal, PostDetailModal } from '@/components/modals';
 import { removeUser } from '@/redux/app-state.slice';
 import { useModal } from '@/hooks';
 import { Image } from 'expo-image';
-import { PROFILE_SCREEN_IMAGES, WIDTH_FOR_WEB } from '@/constants';
+import { PROFILE_SCREEN_DATA, WIDTH_FOR_WEB } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/redux';
 import { signOut } from 'firebase/auth';
 import { FIREBASE_AUTH } from '@/services';
@@ -17,7 +17,11 @@ import { FIREBASE_AUTH } from '@/services';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
+  const [selectedPost, setSelectedPost] = useState<IPost | null>(null);
+
   const [showModal, openModal, closeModal] = useModal();
+  const [showDetailsModal, openDetailsModal, closeDetailsModal] = useModal();
+
   const insets = useSafeAreaInsets();
 
   const user = useAppSelector((state) => state.appState.user);
@@ -30,7 +34,10 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
     dispatch(removeUser());
   };
 
-  const handleZoomImage = () => {};
+  const handleZoomImage = (post: IPost) => {
+    setSelectedPost(post);
+    openDetailsModal();
+  };
 
   return (
     <Fragment>
@@ -51,17 +58,18 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
         <FlatList
-          data={PROFILE_SCREEN_IMAGES}
+          data={PROFILE_SCREEN_DATA}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
-            <TouchableOpacity onPress={handleZoomImage} style={styles.post} activeOpacity={0.8}>
+            <TouchableOpacity onPress={() => handleZoomImage(item)} style={styles.post} activeOpacity={0.8}>
               <Image
                 style={{ flex: 1 }}
-                source={item}
+                source={{ uri: item.imageURL }}
                 contentFit='cover'
                 transition={1000}
                 cachePolicy={'memory-disk'}
                 placeholder={'https://placehold.co/400'}
+                placeholderContentFit='cover'
               />
             </TouchableOpacity>
           )}
@@ -69,8 +77,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
           style={styles.postsGrid}
         />
       </View>
+      <PostDetailModal isVisible={showDetailsModal} onClose={closeDetailsModal} selectedPost={selectedPost} />
       <AlertModal
-        animationType='slide'
         isVisible={showModal}
         onClose={closeModal}
         title='Logout'

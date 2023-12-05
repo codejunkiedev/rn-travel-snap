@@ -1,5 +1,6 @@
 import React from 'react';
 import type { ViewStyle, TextStyle, KeyboardType, TextInputProps, AlertButton, ModalProps } from 'react-native';
+import { IPost } from './common';
 
 type ViewStyleProp = ViewStyle | ViewStyle[];
 type TextStyleProp = TextStyle | TextStyle[];
@@ -66,18 +67,19 @@ export interface IImagePickerProps {
   disabled?: boolean;
 }
 
-export interface IModalProps {
+interface ExtendableModalProps {
   isVisible: boolean;
   onClose: () => void;
-  modalStyle?: ViewStyleProp;
-  transparent?: ModalProps['transparent'];
-  animationType?: ModalProps['animationType'];
-  statusBarTranslucent?: ModalProps['statusBarTranslucent'];
   onShow?: ModalProps['onShow'];
   onDismiss?: ModalProps['onDismiss'];
 }
 
-type ExtendableModalProps = Omit<IModalProps, 'modalStyle'>;
+export interface IModalProps extends ExtendableModalProps {
+  modalStyle?: ViewStyleProp;
+  transparent?: ModalProps['transparent'];
+  animationType?: ModalProps['animationType'];
+  statusBarTranslucent?: ModalProps['statusBarTranslucent'];
+}
 
 export interface IImagePickerModalProps extends ExtendableModalProps {
   onPressCamera: () => void;
@@ -98,4 +100,8 @@ export interface IFABProps {
   onPress: () => void;
   icon: React.ReactNode;
   style?: ViewStyleProp;
+}
+
+export interface IPostDetailModalProps extends ExtendableModalProps {
+  selectedPost: IPost | null;
 }

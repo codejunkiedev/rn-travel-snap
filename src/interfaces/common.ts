@@ -1,10 +1,17 @@
-export interface IPost {}
+interface FirebaseResource {
+  createdAt?: number;
+  updatedAt?: number;
+  uid?: string;
+}
 
-export interface IUser {
+export interface IPost extends FirebaseResource {
+  content: string;
+  imageURL: string;
+}
+
+export interface IUser extends FirebaseResource {
   name: string;
   email: string;
   posts: IPost[];
-  uid: string;
-  createdAt: number;
   profilePicURL: string;
 }
