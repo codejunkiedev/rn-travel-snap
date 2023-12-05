@@ -1,30 +1,47 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
-import React, { Fragment, useState } from 'react';
-import { AddPostScreenProps, IPost } from '@/interfaces';
+import React, { Fragment, useMemo, useState } from 'react';
+import { AddPostScreenProps, IAddPostForm, IPost } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS } from '@/typography';
 import { Button, LabeledInput } from '@/components/ui';
 import { useLoading, useModal } from '@/hooks';
-import { warningFlash } from '@/helpers/flash-message';
+import { infoFlash, warningFlash } from '@/helpers/flash-message';
 import { AlertModal } from '@/components/modals';
 import { useAppSelector } from '@/redux';
 import { ImagePicker } from '@/components';
+import { useFormik } from 'formik';
+import { validationSchemaAddPost } from '@/constants';
 
 const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
-  const [content, setContent] = useState<string>('');
   const [imageUri, setImageUri] = useState<string>('');
+
+  const formik = useFormik({
+    initialValues: { content: '' },
+    validationSchema: validationSchemaAddPost,
+    onSubmit: (values) => handlePost(values),
+  });
 
   const [loading, setLoading] = useLoading();
   const [showModal, openModal, closeModal] = useModal();
   const insets = useSafeAreaInsets();
 
+  const isFormFilled = useMemo(
+    () => formik.values.content !== '' && imageUri !== '',
+    [formik.values.content, imageUri]
+  );
+
   const user = useAppSelector((state) => state.appState.user);
 
-  const handlePost = async () => {
+  const handlePost = async (values: IAddPostForm) => {
+    if (!isFormFilled) {
+      infoFlash('Please fill all the fields', 'Image and Description are required');
+      return;
+    }
+
     try {
       setLoading(true);
       const payload: IPost = {
-        content,
+        ...values,
         imageURL: imageUri,
         user: {
           name: user?.name!,
@@ -41,13 +58,13 @@ const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
   };
 
   const handleClearInputs = () => {
-    setContent('');
+    formik.resetForm();
     setImageUri('');
     closeModal();
   };
 
   const handleDiscardChanges = () => {
-    if (content || imageUri) {
+    if (isFormFilled) {
       openModal();
     } else {
       navigation.goBack();
@@ -61,16 +78,23 @@ const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
           <ImagePicker imageUri={imageUri} onImageSelected={(uri) => setImageUri(uri)} />
           <LabeledInput
             label='Description'
-            value={content}
+            value={formik.values.content}
             multiline
             numberOfLines={3}
             maxLength={250}
             autoCapitalize={'sentences'}
             editable={!loading}
-            onChangeText={(text) => setContent(text)}
+            onChangeText={formik.handleChange('content')}
+            error={formik.errors.content}
+            touched={formik.touched.content}
             showTextCounter
           />
-          <Button title='Create Post' onPress={handlePost} isLoading={loading} buttonStyle={{ marginTop: 10 }} />
+          <Button
+            title='Create Post'
+            onPress={formik.handleSubmit}
+            isLoading={loading}
+            buttonStyle={{ marginTop: 10 }}
+          />
           <Button title='Discard Changes' onPress={handleDiscardChanges} mode='outlined' />
         </View>
       </ScrollView>

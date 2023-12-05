@@ -14,3 +14,11 @@ export const validationSchemaSignIn = yup.object().shape({
   email: yup.string().email('Invalid email address').required('Email is required'),
   password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
 });
+
+export const validationSchemaAddPost = yup.object().shape({
+  content: yup
+    .string()
+    .min(1, 'Content must be at least 1 characters')
+    .max(250, 'Content must be at most 250 characters')
+    .required('Content is required'),
+});
