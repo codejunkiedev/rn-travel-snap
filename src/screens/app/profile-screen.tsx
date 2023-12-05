@@ -37,6 +37,11 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
     openDetailsModal();
   };
 
+  const handleCloseDetailsModal = () => {
+    closeDetailsModal();
+    setSelectedPost(null);
+  };
+
   return (
     <Fragment>
       <View style={[styles.root, { paddingTop: insets.top }]}>
@@ -69,7 +74,11 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
           onEndReached={() => infoFlash('No more posts to show!')}
         />
       </View>
-      <PostDetailModal isVisible={showDetailsModal} onClose={closeDetailsModal} selectedPost={selectedPost} />
+      <PostDetailModal
+        isVisible={showDetailsModal && !!selectedPost}
+        onClose={handleCloseDetailsModal}
+        selectedPost={selectedPost}
+      />
       <AlertModal
         isVisible={showModal}
         onClose={closeModal}

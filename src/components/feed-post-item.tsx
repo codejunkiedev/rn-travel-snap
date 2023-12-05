@@ -2,11 +2,11 @@ import { IFeedPostItemProps } from '@/interfaces';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 import { Image } from 'expo-image';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-export const FeedPostItem: React.FC<IFeedPostItemProps> = React.memo(({ post: item }) => {
+export const FeedPostItem: React.FC<IFeedPostItemProps> = React.memo(({ post: item, onPress }) => {
   return (
-    <View style={styles.feedItem}>
+    <TouchableOpacity activeOpacity={0.8} onPress={() => onPress(item)} style={styles.feedItem}>
       <View style={styles.userRow}>
         <Image
           style={styles.userImage}
@@ -31,7 +31,7 @@ export const FeedPostItem: React.FC<IFeedPostItemProps> = React.memo(({ post: it
         />
       </View>
       <Text style={styles.postCaption}>{item.content}</Text>
-    </View>
+    </TouchableOpacity>
   );
 });
 
