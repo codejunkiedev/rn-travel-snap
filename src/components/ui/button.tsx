@@ -33,7 +33,7 @@ const containerStyles = StyleSheet.create({
     marginHorizontal: 10,
     marginVertical: 5,
     borderRadius: 8,
-    minHeight: 40,
+    minHeight: 45,
     minWidth: 100,
     justifyContent: 'center',
   },

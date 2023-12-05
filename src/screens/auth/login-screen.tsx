@@ -1,34 +1,54 @@
-import { StyleSheet } from 'react-native';
-import React, { useState } from 'react';
-import { LoginScreenProps, ILoginForm } from '@/interfaces';
+import { StyleSheet, Text } from 'react-native';
+import React, { useEffect } from 'react';
+import { LoginScreenProps, ILoginForm, IUser } from '@/interfaces';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Image } from 'expo-image';
 import { useLoading } from '@/hooks';
-import { IMAGES, AuthScreens, validationSchemaSignIn } from '@/constants';
-import { COLORS } from '@/typography';
+import { AuthScreens, validationSchemaSignIn } from '@/constants';
+import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 import { Button, LabeledInput } from '@/components/ui';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { updateUser } from '@/redux/app-state.slice';
+import { FIREBASE_AUTH, FIRESTORE_DB } from '@/services';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { successFlash, warningFlash } from '@/helpers/flash-message';
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, route }) => {
+  const credentials = route.params;
+
   const [loading, setLoading] = useLoading();
 
   const dispatch = useDispatch();
 
+  const auth = FIREBASE_AUTH;
+
   const formik = useFormik({
-    initialValues: { email: '', password: '' },
+    initialValues: { email: credentials.email || '', password: credentials.password || '' },
     validationSchema: validationSchemaSignIn,
     onSubmit: (values) => handleLogin(values),
   });
 
-  const handleLogin = (payload: ILoginForm) => {
+  useEffect(() => {
+    if (credentials.email && credentials.password) {
+      formik.setFieldValue('email', credentials.email);
+      formik.setFieldValue('password', credentials.password);
+    }
+  }, [credentials.email, credentials.password]);
+
+  const handleLogin = async ({ email, password }: ILoginForm) => {
     try {
       setLoading(true);
-      console.log('payload', payload);
-      dispatch(updateUser({ email: payload.email, name: 'John Doe' }));
-    } catch (e) {
-      console.warn(e);
+      const response = await signInWithEmailAndPassword(auth, email, password);
+      // console.log('response', response);
+      const userDocRef = await getDoc(doc(FIRESTORE_DB, 'users', response.user.uid));
+      const userData = userDocRef.data() as IUser;
+      // console.log('user', userDocRef.data());
+      dispatch(updateUser(userData));
+      successFlash('Login successful');
+    } catch (e: any) {
+      console.warn('Login', e.message ?? 'Something went wrong');
+      warningFlash('Login failed');
     } finally {
       setLoading(false);
     }
@@ -43,7 +63,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.root}>
-      <Image source={IMAGES.LOGO} style={styles.logo} />
+      <Text style={styles.logo}>Travel Snap</Text>
       <LabeledInput
         label='Email'
         placeholder='johndoe@gmail.com'
@@ -84,9 +104,15 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.BACKGROUND,
   },
   logo: {
-    height: 120,
-    width: 120,
+    width: '80%',
     alignSelf: 'center',
     marginBottom: 20,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    fontSize: FONT_SIZE.HEADER,
+    fontFamily: FONT_FAMILY.POPPINS_BOLD_ITALIC,
+    color: COLORS.PRIMARY,
+    textDecorationColor: COLORS.SECONDARY,
+    textDecorationLine: 'underline',
   },
 });

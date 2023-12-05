@@ -1,5 +1,5 @@
 import { Platform, StyleSheet, Text, TextInput, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ILabeledInputProps } from '@/interfaces';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 
@@ -17,8 +17,18 @@ export const LabeledInput: React.FC<ILabeledInputProps> = ({
   keyboardAppearance,
   autoCapitalize,
   autoCorrect,
+  blurOnSubmit,
+  editable,
+  maxLength = 50,
+  multiline,
+  numberOfLines,
+  onSubmitEditing,
+  returnKeyType,
+  textAlign,
+  textAlignVertical,
   onBlur,
   onFocus,
+  showTextCounter,
   error,
   touched,
 }) => {
@@ -33,6 +43,8 @@ export const LabeledInput: React.FC<ILabeledInputProps> = ({
     setSelected(true);
     onFocus?.();
   };
+
+  const isTextLimit = useMemo(() => value.length >= maxLength, [value, maxLength]);
 
   return (
     <View style={[styles.container, selected && styles.selected, containerStyle]}>
@@ -50,7 +62,21 @@ export const LabeledInput: React.FC<ILabeledInputProps> = ({
         autoCorrect={autoCorrect ?? false}
         keyboardAppearance={keyboardAppearance ?? 'default'}
         textContentType={textContentType ?? 'none'}
+        multiline={multiline ?? false}
+        numberOfLines={numberOfLines ?? 1}
+        maxLength={maxLength}
+        onSubmitEditing={onSubmitEditing}
+        returnKeyType={returnKeyType ?? 'done'}
+        blurOnSubmit={blurOnSubmit ?? true}
+        editable={editable ?? true}
+        textAlign={textAlign ?? 'left'}
+        textAlignVertical={textAlignVertical ?? multiline ? 'top' : 'center'}
       />
+      {showTextCounter && (
+        <Text style={[styles.counter, isTextLimit && styles.counterError]}>
+          {value.length}/{maxLength}
+        </Text>
+      )}
       {error && touched && <Text style={styles.error}>{error}</Text>}
     </View>
   );
@@ -91,6 +117,17 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.POPPINS_REGULAR,
     marginTop: 5,
     textAlignVertical: 'center',
+  },
+  counter: {
+    fontSize: FONT_SIZE.EXTRA_SMALL,
+    color: COLORS.BLACK,
+    fontFamily: FONT_FAMILY.POPPINS_REGULAR,
+    marginTop: 5,
+    textAlignVertical: 'center',
+    alignSelf: 'flex-end',
+  },
+  counterError: {
+    color: COLORS.DANGER,
   },
 });
 

@@ -1,4 +1,6 @@
+import React from 'react';
 import type { ViewStyle, TextStyle, KeyboardType, TextInputProps, AlertButton, ModalProps } from 'react-native';
+import { IPost } from './common';
 
 type ViewStyleProp = ViewStyle | ViewStyle[];
 type TextStyleProp = TextStyle | TextStyle[];
@@ -18,6 +20,16 @@ export interface ILabeledInputProps {
   keyboardAppearance?: TextInputProps['keyboardAppearance'];
   autoCapitalize?: TextInputProps['autoCapitalize'];
   autoCorrect?: TextInputProps['autoCorrect'];
+  multiline?: TextInputProps['multiline'];
+  numberOfLines?: TextInputProps['numberOfLines'];
+  maxLength?: TextInputProps['maxLength'];
+  editable?: TextInputProps['editable'];
+  returnKeyType?: TextInputProps['returnKeyType'];
+  onSubmitEditing?: TextInputProps['onSubmitEditing'];
+  blurOnSubmit?: TextInputProps['blurOnSubmit'];
+  textAlign?: TextInputProps['textAlign'];
+  textAlignVertical?: TextInputProps['textAlignVertical'];
+  showTextCounter?: boolean;
 
   labelStyle?: TextStyle;
   inputStyle?: TextStyle;
@@ -48,18 +60,26 @@ export interface IUserImagePickerProps {
   disabled?: boolean;
 }
 
-export interface IModalProps {
+export interface IImagePickerProps {
+  imageUri: string;
+  onImageSelected?: (imageUri: string) => void;
+  containerStyle?: ViewStyleProp;
+  disabled?: boolean;
+}
+
+interface ExtendableModalProps {
   isVisible: boolean;
   onClose: () => void;
-  modalStyle?: ViewStyleProp;
-  transparent?: ModalProps['transparent'];
-  animationType?: ModalProps['animationType'];
-  statusBarTranslucent?: ModalProps['statusBarTranslucent'];
   onShow?: ModalProps['onShow'];
   onDismiss?: ModalProps['onDismiss'];
 }
 
-type ExtendableModalProps = Omit<IModalProps, 'modalStyle'>;
+export interface IModalProps extends ExtendableModalProps {
+  modalStyle?: ViewStyleProp;
+  transparent?: ModalProps['transparent'];
+  animationType?: ModalProps['animationType'];
+  statusBarTranslucent?: ModalProps['statusBarTranslucent'];
+}
 
 export interface IImagePickerModalProps extends ExtendableModalProps {
   onPressCamera: () => void;
@@ -74,4 +94,24 @@ export interface IAlertModalProps extends ExtendableModalProps {
   title: string;
   message?: string;
   buttons: AlertButton[];
+}
+
+export interface IFABProps {
+  onPress: () => void;
+  icon: React.ReactNode;
+  style?: ViewStyleProp;
+}
+
+export interface IPostDetailModalProps extends ExtendableModalProps {
+  selectedPost: IPost | null;
+}
+
+export interface IFeedPostItemProps {
+  post: IPost;
+  onPress: (post: IPost) => void;
+}
+
+export interface IProfilePostItemProps {
+  post: IPost;
+  onPress: (post: IPost) => void;
 }

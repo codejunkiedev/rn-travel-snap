@@ -1,93 +1,85 @@
-import { FlatList, StyleSheet, Text, TouchableOpacity, View, Dimensions, Platform } from 'react-native';
-import React, { Fragment } from 'react';
-import { ProfileScreenProps } from '@/interfaces';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { Fragment, useState } from 'react';
+import { IPost, ProfileScreenProps } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
-import { UserImagePicker } from '@/components';
+import { ProfilePostItem, UserImagePicker } from '@/components';
 import { Ionicons } from '@expo/vector-icons';
-import { AlertModal } from '@/components/modals';
-import { useDispatch } from 'react-redux';
+import { AlertModal, PostDetailModal } from '@/components/modals';
 import { removeUser } from '@/redux/app-state.slice';
 import { useModal } from '@/hooks';
-import { Image } from 'expo-image';
-import { WIDTH_FOR_WEB } from '@/constants';
-
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
-
-const images = [
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-  'https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=2048x2048&w=is&k=20&c=t9_zg20wVbrBoGn0tw__1fFq4ykeKs15TQQ3x-ehVC0=',
-];
+import { PROFILE_SCREEN_DATA } from '@/constants';
+import { useAppDispatch, useAppSelector } from '@/redux';
+import { signOut } from 'firebase/auth';
+import { FIREBASE_AUTH } from '@/services';
+import { infoFlash } from '@/helpers/flash-message';
 
 const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
-  const name = 'John Doe';
-  const email = 'johndoe@gmail.com';
-  const imageUri = '';
+  const [selectedPost, setSelectedPost] = useState<IPost | null>(null);
 
   const [showModal, openModal, closeModal] = useModal();
+  const [showDetailsModal, openDetailsModal, closeDetailsModal] = useModal();
+
   const insets = useSafeAreaInsets();
 
-  const dispatch = useDispatch();
+  const user = useAppSelector((state) => state.appState.user);
 
-  const handleLogout = () => {
+  const dispatch = useAppDispatch();
+
+  const handleLogout = async () => {
     closeModal();
+    await signOut(FIREBASE_AUTH);
     dispatch(removeUser());
   };
 
-  const handleZoomImage = () => {};
+  const handleZoomImage = (post: IPost) => {
+    setSelectedPost(post);
+    openDetailsModal();
+  };
+
+  const handleCloseDetailsModal = () => {
+    closeDetailsModal();
+    setSelectedPost(null);
+  };
 
   return (
     <Fragment>
       <View style={[styles.root, { paddingTop: insets.top }]}>
         <View style={styles.infoContainer}>
-          <UserImagePicker imageUri={imageUri} name={name} disabled containerStyle={styles.image} />
+          <UserImagePicker
+            imageUri={user?.profilePicURL || ''}
+            name={user?.name || 'John Doe'}
+            disabled
+            containerStyle={styles.image}
+          />
           <View style={styles.info}>
-            <Text style={styles.name}>{name}</Text>
-            <Text style={styles.email}>{email}</Text>
+            <Text style={styles.name}>{user?.name || 'John Doe'}</Text>
+            <Text style={styles.email}>{user?.email || 'johndoe@gmail.com'}</Text>
           </View>
           <TouchableOpacity onPress={openModal}>
             <Ionicons name='settings' size={24} color={COLORS.SECONDARY} />
           </TouchableOpacity>
         </View>
         <FlatList
-          data={images}
+          data={PROFILE_SCREEN_DATA}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={handleZoomImage} style={styles.post} activeOpacity={0.8}>
-              <Image
-                style={{ flex: 1 }}
-                source={item}
-                contentFit='cover'
-                transition={1000}
-                cachePolicy={'memory-disk'}
-                placeholder={'https://placehold.co/400'}
-              />
-            </TouchableOpacity>
-          )}
+          renderItem={({ item }) => <ProfilePostItem post={item} onPress={handleZoomImage} />}
           numColumns={3}
           style={styles.postsGrid}
+          contentContainerStyle={{ gap: 1 }}
+          columnWrapperStyle={{ gap: 1 }}
+          showsVerticalScrollIndicator={false}
+          initialNumToRender={10}
+          maxToRenderPerBatch={10}
+          onEndReached={() => infoFlash('No more posts to show!')}
         />
       </View>
+      <PostDetailModal
+        isVisible={showDetailsModal && !!selectedPost}
+        onClose={handleCloseDetailsModal}
+        selectedPost={selectedPost}
+      />
       <AlertModal
-        animationType='slide'
         isVisible={showModal}
         onClose={closeModal}
         title='Logout'
@@ -132,16 +124,6 @@ const styles = StyleSheet.create({
   },
   postsGrid: {
     flex: 1,
-  },
-  post: {
-    ...Platform.select({
-      web: {
-        width: WIDTH_FOR_WEB / 3,
-      },
-      default: {
-        width: SCREEN_WIDTH / 3,
-      },
-    }),
-    aspectRatio: 1,
+    backgroundColor: COLORS.WHITE,
   },
 });
