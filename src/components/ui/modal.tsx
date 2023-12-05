@@ -8,9 +8,7 @@ const { width, height } = Dimensions.get('window');
 export const Modal: React.FC<PropsWithChildren<IModalProps>> = ({
   isVisible,
   animationType,
-  onDismiss,
   onClose,
-  onShow,
   statusBarTranslucent,
   transparent,
   children,
@@ -22,8 +20,6 @@ export const Modal: React.FC<PropsWithChildren<IModalProps>> = ({
       transparent={transparent ?? true}
       animationType={animationType ?? 'fade'}
       statusBarTranslucent={statusBarTranslucent ?? true}
-      onDismiss={onDismiss}
-      onShow={onShow}
       onRequestClose={onClose}
     >
       <View style={[styles.modal, modalStyle]}>{children}</View>
