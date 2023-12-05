@@ -19,7 +19,6 @@ export const PostDetailModal: React.FC<IPostDetailModalProps> = ({ isVisible, on
           placeholderContentFit='cover'
           style={styles.image}
           cachePolicy={'memory-disk'}
-          transition={1000}
         />
         <Text style={styles.description}>{selectedPost?.content ?? des}</Text>
         <FAB onPress={onClose} style={styles.fab} icon={<Ionicons name='close' size={22} color={COLORS.WHITE} />} />

@@ -66,7 +66,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
                 style={{ flex: 1 }}
                 source={{ uri: item.imageURL }}
                 contentFit='cover'
-                transition={1000}
+                transition={500}
                 cachePolicy={'memory-disk'}
                 placeholder={'https://placehold.co/400'}
                 placeholderContentFit='cover'
