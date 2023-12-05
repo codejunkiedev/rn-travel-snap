@@ -14,7 +14,7 @@ export const PostDetailModal: React.FC<IPostDetailModalProps> = ({ isVisible, on
   const insets = useSafeAreaInsets();
 
   return (
-    <Modal modalStyle={styles.modal} isVisible={isVisible} onClose={onClose} animationType='slide'>
+    <Modal modalStyle={styles.modal} isVisible={isVisible} onClose={onClose}>
       <View style={[styles.root, { marginTop: insets.top, marginBottom: insets.bottom }]}>
         <FAB onPress={onClose} style={styles.fab} icon={<Ionicons name='close' size={24} color={COLORS.WHITE} />} />
         <Image
