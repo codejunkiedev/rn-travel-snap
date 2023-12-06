@@ -1,6 +1,6 @@
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { Fragment, useState } from 'react';
-import { IPost, ProfileScreenProps } from '@/interfaces';
+import React, { Fragment, useEffect, useState } from 'react';
+import { IPost, IUser, ProfileScreenProps } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 import { ProfilePostItem, UserImagePicker } from '@/components';
@@ -11,8 +11,9 @@ import { useModal } from '@/hooks';
 import { PROFILE_SCREEN_DATA } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/redux';
 import { signOut } from 'firebase/auth';
-import { FIREBASE_AUTH } from '@/services';
+import { FIREBASE_AUTH, FIRESTORE_DB } from '@/services';
 import { infoFlash } from '@/helpers/flash-message';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 
 const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
   const [selectedPost, setSelectedPost] = useState<IPost | null>(null);
@@ -25,7 +26,28 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
   const user = useAppSelector((state) => state.appState.user);
 
   const dispatch = useAppDispatch();
+  const [allPosts,setAllPosts] = useState<IPost[]>([])
+  const getAllPosts = async () =>{
+    const posts:IPost[] = []
+    try {
+      const userDocRef = await getDocs(query(collection(FIRESTORE_DB, 'posts'),where("userId","==",user?.uid)));
+      for(let doccument of userDocRef.docs){
+        const postData = await doccument.data() as IPost;
+        const userDoc = await getDoc(doc(FIRESTORE_DB, 'users', postData?.userId));
+        const userData = userDoc.data() as IUser
+        posts.push({...postData,user:userData})
+      }
+      setAllPosts(posts)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
+  useEffect(()=>{
+    if(user?.uid){
+      getAllPosts()
+    }
+  },[user?.uid])
   const handleLogout = async () => {
     closeModal();
     await signOut(FIREBASE_AUTH);
@@ -61,7 +83,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
         <FlatList
-          data={PROFILE_SCREEN_DATA}
+          data={allPosts}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => <ProfilePostItem post={item} onPress={handleZoomImage} />}
           numColumns={3}

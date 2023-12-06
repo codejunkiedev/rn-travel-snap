@@ -11,9 +11,14 @@ import { useAppSelector } from '@/redux';
 import { ImagePicker } from '@/components';
 import { useFormik } from 'formik';
 import { validationSchemaAddPost } from '@/constants';
+import { doc, setDoc } from 'firebase/firestore';
+import { FIREBASE_STORAGE, FIRESTORE_DB } from '@/services';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { v4 as uuidv4 } from 'uuid';
 
 const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
   const [imageUri, setImageUri] = useState<string>('');
+  // const myUser = useAppSelector((state) => state.appState.user);
 
   const formik = useFormik({
     initialValues: { content: '' },
@@ -42,13 +47,32 @@ const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
       setLoading(true);
       const payload: IPost = {
         ...values,
+        id: uuidv4(),
         imageURL: imageUri,
-        user: {
-          name: user?.name!,
-          profilePicURL: user?.profilePicURL!,
-          email: user?.email!,
-        },
+        userId:user?.uid as string
       };
+
+      const fileRef = ref(FIREBASE_STORAGE, `posts/${user?.uid}/${payload.id}`);
+      const blob: Blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          resolve(xhr.response);
+        };
+        xhr.onerror = function () {
+          reject(new TypeError('Network request failed'));
+        };
+        xhr.responseType = 'blob';
+        xhr.open('GET', imageUri, true);
+        xhr.send(null);
+      });
+
+      var mimeString = imageUri.split(',')[0].split(':')[1].split(';')[0];
+      await uploadBytes(fileRef, blob, { contentType: mimeString });
+      const downloadUrlRes = await getDownloadURL(fileRef);
+      payload.imageURL = downloadUrlRes;
+      await setDoc(doc(FIRESTORE_DB, 'posts', payload.id), payload);
+      console.log("post created")
+      navigation.goBack();
     } catch (error) {
       console.warn('handlePost error', error);
       warningFlash('An error occurred while posting');

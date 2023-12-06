@@ -5,9 +5,11 @@ interface FirebaseResource {
 }
 
 export interface IPost extends FirebaseResource {
+  id:string;
   content: string;
   imageURL: string;
-  user: IUser;
+  userId:string;
+  user?: IUser;
 }
 
 export interface IUser extends FirebaseResource {
