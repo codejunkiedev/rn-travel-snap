@@ -45,11 +45,12 @@ const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
 
     try {
       setLoading(true);
-      const payload = {
+      const payload: Partial<IPost> = {
         ...values,
         id: Date.now().toString(),
         imageURL: imageUri,
-        userId: user?.uid as string,
+        userId: user?.uid,
+        createdAt: Date.now(),
       };
 
       const fileRef = ref(FIREBASE_STORAGE, `posts/${user?.uid}/${payload.id}`);
@@ -70,7 +71,7 @@ const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
       await uploadBytes(fileRef, blob, { contentType: mimeString });
       const downloadUrlRes = await getDownloadURL(fileRef);
       payload.imageURL = downloadUrlRes;
-      await setDoc(doc(FIRESTORE_DB, 'posts', payload.id), payload);
+      await setDoc(doc(FIRESTORE_DB, 'posts', payload.id!), payload);
       successFlash('Post created successfully');
       console.log('post created');
       handleClearInputs();

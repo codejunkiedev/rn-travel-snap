@@ -10,7 +10,7 @@ import { FeedPostItem } from '@/components';
 import { infoFlash, warningFlash } from '@/helpers/flash-message';
 import { PostDetailModal } from '@/components/modals';
 import { useLoading, useModal } from '@/hooks';
-import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { FIRESTORE_DB } from '@/services';
 import { useFocusEffect } from '@react-navigation/native';
 import { ListEmpty } from '@/components/ui/list-empty';
@@ -26,14 +26,14 @@ const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
     const posts: IPost[] = [];
     try {
       setLoading(true);
-      const userDocRef = await getDocs(collection(FIRESTORE_DB, 'posts'));
+      const userDocRef = await getDocs(query(collection(FIRESTORE_DB, 'posts'), orderBy('createdAt')));
       for (let document of userDocRef.docs) {
         const postData = (await document.data()) as IPost;
         const userDoc = await getDoc(doc(FIRESTORE_DB, 'users', postData?.userId));
         const userData = userDoc.data() as IUser;
         posts.push({ ...postData, user: userData });
       }
-      setAllPosts(posts.reverse());
+      setAllPosts(posts);
     } catch (error) {
       warningFlash('Failed to fetch posts');
       console.warn('Failed to fetch posts', error);

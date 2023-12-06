@@ -13,7 +13,7 @@ import { useAppDispatch, useAppSelector } from '@/redux';
 import { signOut } from 'firebase/auth';
 import { FIREBASE_AUTH, FIRESTORE_DB } from '@/services';
 import { infoFlash, warningFlash } from '@/helpers/flash-message';
-import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { useFocusEffect } from '@react-navigation/native';
 import { ListEmpty } from '@/components/ui/list-empty';
 
@@ -42,7 +42,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
         const userData = userDoc.data() as IUser;
         posts.push({ ...postData, user: userData });
       }
-      setAllPosts(posts.reverse());
+      setAllPosts(posts);
     } catch (error) {
       warningFlash('Failed to fetch posts');
       console.warn('Failed to fetch posts', error);

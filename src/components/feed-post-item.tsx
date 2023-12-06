@@ -11,19 +11,19 @@ export const FeedPostItem: React.FC<IFeedPostItemProps> = React.memo(({ post: it
       <View style={styles.userRow}>
         <Image
           style={styles.userImage}
-          source={{ uri: item.user.profilePicURL }}
+          source={{ uri: item?.user?.profilePicURL || '' }}
           contentFit='cover'
           placeholder={IMAGES.USER}
           placeholderContentFit='cover'
           transition={300}
           cachePolicy={'memory-disk'}
         />
-        <Text style={styles.userName}>{item.user.name}</Text>
+        <Text style={styles.userName}>{item?.user?.name || ''}</Text>
       </View>
       <View style={styles.postCol}>
         <Image
           style={styles.postImage}
-          source={{ uri: item.imageURL }}
+          source={{ uri: item?.imageURL || '' }}
           contentFit='cover'
           placeholder={'https://placehold.co/400'}
           placeholderContentFit='cover'

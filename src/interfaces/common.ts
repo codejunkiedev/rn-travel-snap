@@ -10,6 +10,7 @@ export interface IPost extends FirebaseResource {
   imageURL: string;
   userId: string;
   user: IUser;
+  createdAt: number;
 }
 
 export interface IUser extends FirebaseResource {
