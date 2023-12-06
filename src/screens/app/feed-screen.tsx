@@ -79,7 +79,7 @@ const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
           initialNumToRender={10}
           maxToRenderPerBatch={10}
           showsVerticalScrollIndicator={false}
-          onEndReached={() => infoFlash('No more posts to show!')}
+          onEndReached={() => allPosts.length > 0 && infoFlash('No more posts to show!')}
           ListEmptyComponent={() => <ListEmpty title='No posts to show' />}
           refreshControl={<RefreshControl refreshing={loading} onRefresh={getAllPosts} />}
         />

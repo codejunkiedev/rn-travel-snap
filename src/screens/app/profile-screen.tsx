@@ -1,5 +1,5 @@
 import { FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { IPost, IUser, ProfileScreenProps } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
@@ -104,7 +104,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
           showsVerticalScrollIndicator={false}
           initialNumToRender={10}
           maxToRenderPerBatch={10}
-          onEndReached={() => infoFlash('No more posts to show!')}
+          onEndReached={() => allPosts.length > 0 && infoFlash('No more posts to show!')}
           ListEmptyComponent={() => <ListEmpty title='No posts yet' />}
           refreshControl={<RefreshControl refreshing={loading} onRefresh={getAllPosts} />}
         />
