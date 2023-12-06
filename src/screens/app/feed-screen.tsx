@@ -33,7 +33,7 @@ const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
         const userData = userDoc.data() as IUser;
         posts.push({ ...postData, user: userData });
       }
-      setAllPosts(posts);
+      setAllPosts(posts.reverse());
     } catch (error) {
       warningFlash('Failed to fetch posts');
       console.warn('Failed to fetch posts', error);
@@ -84,7 +84,7 @@ const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
           ListEmptyComponent={() => !loading && <ListEmpty title='No posts to show' />}
           refreshControl={<RefreshControl refreshing={loading} onRefresh={getAllPosts} />}
         />
-        <FAB onPress={navigateToCreatePost} icon={<Feather name='edit' size={22} color={COLORS.WHITE} />} />
+        {/* <FAB onPress={navigateToCreatePost} icon={<Feather name='edit' size={22} color={COLORS.WHITE} />} /> */}
       </View>
       <PostDetailModal
         isVisible={showDetailsModal && !!selectedPost}

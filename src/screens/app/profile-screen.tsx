@@ -42,7 +42,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
         const userData = userDoc.data() as IUser;
         posts.push({ ...postData, user: userData });
       }
-      setAllPosts(posts);
+      setAllPosts(posts.reverse());
     } catch (error) {
       warningFlash('Failed to fetch posts');
       console.warn('Failed to fetch posts', error);

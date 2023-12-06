@@ -47,7 +47,7 @@ const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
       setLoading(true);
       const payload = {
         ...values,
-        id: uuidv4(),
+        id: Date.now().toString(),
         imageURL: imageUri,
         userId: user?.uid as string,
       };
@@ -73,6 +73,7 @@ const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
       await setDoc(doc(FIRESTORE_DB, 'posts', payload.id), payload);
       successFlash('Post created successfully');
       console.log('post created');
+      handleClearInputs();
       navigation.goBack();
     } catch (error) {
       console.warn('handlePost error', error);
