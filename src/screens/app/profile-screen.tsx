@@ -35,14 +35,16 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
     const posts: IPost[] = [];
     try {
       setLoading(true);
-      const userDocRef = await getDocs(query(collection(FIRESTORE_DB, 'posts'), where('userId', '==', user?.uid)));
+      const userDocRef = await getDocs(query(collection(FIRESTORE_DB, 'posts'), orderBy('createdAt', 'desc')));
+      // const userDocRef = await getDocs(query(collection(FIRESTORE_DB, 'posts'), where('userId', '==', user?.uid)));
       for (let document of userDocRef.docs) {
         const postData = (await document.data()) as IPost;
         const userDoc = await getDoc(doc(FIRESTORE_DB, 'users', postData?.userId));
         const userData = userDoc.data() as IUser;
         posts.push({ ...postData, user: userData });
       }
-      setAllPosts(posts);
+      const filter = posts.filter((post) => post.userId === user?.uid);
+      setAllPosts(filter);
     } catch (error) {
       warningFlash('Failed to fetch posts');
       console.warn('Failed to fetch posts', error);

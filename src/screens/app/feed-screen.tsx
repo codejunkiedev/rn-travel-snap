@@ -26,7 +26,7 @@ const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
     const posts: IPost[] = [];
     try {
       setLoading(true);
-      const userDocRef = await getDocs(query(collection(FIRESTORE_DB, 'posts'), orderBy('createdAt')));
+      const userDocRef = await getDocs(query(collection(FIRESTORE_DB, 'posts'), orderBy('createdAt', 'desc')));
       for (let document of userDocRef.docs) {
         const postData = (await document.data()) as IPost;
         const userDoc = await getDoc(doc(FIRESTORE_DB, 'users', postData?.userId));
