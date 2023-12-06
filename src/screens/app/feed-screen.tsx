@@ -1,10 +1,10 @@
 import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { FeedScreenProps, IPost, IUser } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FAB, Header } from '@/components/ui';
 import { AppScreens, PROFILE_SCREEN_DATA } from '@/constants';
-import { FontAwesome } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { COLORS } from '@/typography';
 import { FeedPostItem } from '@/components';
 import { infoFlash } from '@/helpers/flash-message';
@@ -83,7 +83,7 @@ const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
           ListEmptyComponent={() => <ListEmpty title='No posts to show' />}
           refreshControl={<RefreshControl refreshing={loading} onRefresh={getAllPosts} />}
         />
-        <FAB onPress={navigateToCreatePost} icon={<FontAwesome name='plus' size={24} color={COLORS.WHITE} />} />
+        <FAB onPress={navigateToCreatePost} icon={<Feather name='edit' size={22} color={COLORS.WHITE} />} />
       </View>
       <PostDetailModal
         isVisible={showDetailsModal && !!selectedPost}
