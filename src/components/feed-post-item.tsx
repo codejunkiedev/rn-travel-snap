@@ -1,3 +1,4 @@
+import { IMAGES } from '@/constants';
 import { IFeedPostItemProps } from '@/interfaces';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 import { Image } from 'expo-image';
@@ -12,7 +13,7 @@ export const FeedPostItem: React.FC<IFeedPostItemProps> = React.memo(({ post: it
           style={styles.userImage}
           source={{ uri: item.user.profilePicURL }}
           contentFit='cover'
-          placeholder={'https://placehold.co/400'}
+          placeholder={IMAGES.USER}
           placeholderContentFit='cover'
           transition={300}
           cachePolicy={'memory-disk'}
