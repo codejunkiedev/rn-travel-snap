@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS } from '@/typography';
 import { Button, LabeledInput } from '@/components/ui';
 import { useLoading, useModal } from '@/hooks';
-import { infoFlash, warningFlash } from '@/helpers/flash-message';
+import { infoFlash, successFlash, warningFlash } from '@/helpers/flash-message';
 import { AlertModal } from '@/components/modals';
 import { useAppSelector } from '@/redux';
 import { ImagePicker } from '@/components';
@@ -71,6 +71,7 @@ const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
       const downloadUrlRes = await getDownloadURL(fileRef);
       payload.imageURL = downloadUrlRes;
       await setDoc(doc(FIRESTORE_DB, 'posts', payload.id), payload);
+      successFlash('Post created successfully');
       console.log('post created');
       navigation.goBack();
     } catch (error) {

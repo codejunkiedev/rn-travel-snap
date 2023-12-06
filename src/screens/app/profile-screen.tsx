@@ -36,8 +36,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
     try {
       setLoading(true);
       const userDocRef = await getDocs(query(collection(FIRESTORE_DB, 'posts'), where('userId', '==', user?.uid)));
-      for (let doccument of userDocRef.docs) {
-        const postData = (await doccument.data()) as IPost;
+      for (let document of userDocRef.docs) {
+        const postData = (await document.data()) as IPost;
         const userDoc = await getDoc(doc(FIRESTORE_DB, 'users', postData?.userId));
         const userData = userDoc.data() as IUser;
         posts.push({ ...postData, user: userData });
