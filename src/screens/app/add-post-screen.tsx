@@ -45,11 +45,11 @@ const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
 
     try {
       setLoading(true);
-      const payload: IPost = {
+      const payload: Partial<IPost> = {
         ...values,
         id: uuidv4(),
         imageURL: imageUri,
-        userId:user?.uid as string
+        userId: user?.uid as string,
       };
 
       const fileRef = ref(FIREBASE_STORAGE, `posts/${user?.uid}/${payload.id}`);

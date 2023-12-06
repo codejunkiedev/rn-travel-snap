@@ -23,14 +23,14 @@ export const PostDetailModal: React.FC<IPostDetailModalProps> = ({ isVisible, on
           placeholder={'https://placehold.co/400'}
           placeholderContentFit='cover'
           style={styles.image}
-          cachePolicy={'memory'}
+          cachePolicy={'memory-disk'}
         />
         <View style={styles.modalContent}>
           <View style={styles.userRow}>
             <Image
               source={{ uri: selectedPost?.user?.profilePicURL }}
               contentFit='cover'
-              cachePolicy={'memory'}
+              cachePolicy={'memory-disk'}
               placeholder={IMAGES.USER}
               placeholderContentFit='cover'
               style={styles.userImage}

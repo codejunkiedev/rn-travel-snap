@@ -15,7 +15,7 @@ export const FeedPostItem: React.FC<IFeedPostItemProps> = React.memo(({ post: it
           placeholder={'https://placehold.co/400'}
           placeholderContentFit='cover'
           transition={300}
-          cachePolicy={'memory'}
+          cachePolicy={'memory-disk'}
         />
         <Text style={styles.userName}>{item.user.name}</Text>
       </View>
@@ -27,7 +27,7 @@ export const FeedPostItem: React.FC<IFeedPostItemProps> = React.memo(({ post: it
           placeholder={'https://placehold.co/400'}
           placeholderContentFit='cover'
           transition={300}
-          cachePolicy={'memory'}
+          cachePolicy={'memory-disk'}
         />
       </View>
       <Text style={styles.postCaption}>{item.content}</Text>
