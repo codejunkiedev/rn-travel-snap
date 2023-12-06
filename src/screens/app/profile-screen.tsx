@@ -105,7 +105,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
           initialNumToRender={10}
           maxToRenderPerBatch={10}
           onEndReached={() => allPosts.length > 0 && infoFlash('No more posts to show!')}
-          ListEmptyComponent={() => <ListEmpty title='No posts yet' />}
+          ListEmptyComponent={() => !loading && <ListEmpty title='No posts yet' />}
           refreshControl={<RefreshControl refreshing={loading} onRefresh={getAllPosts} />}
         />
       </View>

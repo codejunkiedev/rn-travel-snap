@@ -80,7 +80,7 @@ const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
           maxToRenderPerBatch={10}
           showsVerticalScrollIndicator={false}
           onEndReached={() => allPosts.length > 0 && infoFlash('No more posts to show!')}
-          ListEmptyComponent={() => <ListEmpty title='No posts to show' />}
+          ListEmptyComponent={() => !loading && <ListEmpty title='No posts to show' />}
           refreshControl={<RefreshControl refreshing={loading} onRefresh={getAllPosts} />}
         />
         <FAB onPress={navigateToCreatePost} icon={<Feather name='edit' size={22} color={COLORS.WHITE} />} />
