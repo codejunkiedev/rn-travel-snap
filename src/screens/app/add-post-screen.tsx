@@ -45,7 +45,7 @@ const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
 
     try {
       setLoading(true);
-      const payload: Partial<IPost> = {
+      const payload = {
         ...values,
         id: uuidv4(),
         imageURL: imageUri,
