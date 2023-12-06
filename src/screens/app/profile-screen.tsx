@@ -12,7 +12,7 @@ import { PROFILE_SCREEN_DATA } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/redux';
 import { signOut } from 'firebase/auth';
 import { FIREBASE_AUTH, FIRESTORE_DB } from '@/services';
-import { infoFlash } from '@/helpers/flash-message';
+import { infoFlash, warningFlash } from '@/helpers/flash-message';
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { useFocusEffect } from '@react-navigation/native';
 import { ListEmpty } from '@/components/ui/list-empty';
@@ -44,7 +44,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
       }
       setAllPosts(posts);
     } catch (error) {
-      console.log(error);
+      warningFlash('Failed to fetch posts');
+      console.warn('Failed to fetch posts', error);
     } finally {
       setLoading(false);
     }

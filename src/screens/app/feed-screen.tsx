@@ -7,7 +7,7 @@ import { AppScreens, PROFILE_SCREEN_DATA } from '@/constants';
 import { Feather } from '@expo/vector-icons';
 import { COLORS } from '@/typography';
 import { FeedPostItem } from '@/components';
-import { infoFlash } from '@/helpers/flash-message';
+import { infoFlash, warningFlash } from '@/helpers/flash-message';
 import { PostDetailModal } from '@/components/modals';
 import { useLoading, useModal } from '@/hooks';
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
@@ -17,25 +17,26 @@ import { ListEmpty } from '@/components/ui/list-empty';
 
 const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
   const [selectedPost, setSelectedPost] = useState<IPost | null>(null);
-  const [showDetailsModal, openDetailsModal, closeDetailsModal] = useModal();
   const [allPosts, setAllPosts] = useState<IPost[]>([]);
 
   const [loading, setLoading] = useLoading();
+  const [showDetailsModal, openDetailsModal, closeDetailsModal] = useModal();
 
   const getAllPosts = async () => {
     const posts: IPost[] = [];
     try {
       setLoading(true);
       const userDocRef = await getDocs(collection(FIRESTORE_DB, 'posts'));
-      for (let doccument of userDocRef.docs) {
-        const postData = (await doccument.data()) as IPost;
+      for (let document of userDocRef.docs) {
+        const postData = (await document.data()) as IPost;
         const userDoc = await getDoc(doc(FIRESTORE_DB, 'users', postData?.userId));
         const userData = userDoc.data() as IUser;
         posts.push({ ...postData, user: userData });
       }
       setAllPosts(posts);
     } catch (error) {
-      console.log(error);
+      warningFlash('Failed to fetch posts');
+      console.warn('Failed to fetch posts', error);
     } finally {
       setLoading(false);
     }
