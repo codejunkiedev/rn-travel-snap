@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { Fragment, useEffect, useState } from 'react';
 import { IPost, IUser, ProfileScreenProps } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,47 +7,58 @@ import { ProfilePostItem, UserImagePicker } from '@/components';
 import { Ionicons } from '@expo/vector-icons';
 import { AlertModal, PostDetailModal } from '@/components/modals';
 import { removeUser } from '@/redux/app-state.slice';
-import { useModal } from '@/hooks';
+import { useLoading, useModal } from '@/hooks';
 import { PROFILE_SCREEN_DATA } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/redux';
 import { signOut } from 'firebase/auth';
 import { FIREBASE_AUTH, FIRESTORE_DB } from '@/services';
 import { infoFlash } from '@/helpers/flash-message';
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { useFocusEffect } from '@react-navigation/native';
+import { ListEmpty } from '@/components/ui/list-empty';
 
 const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
   const [selectedPost, setSelectedPost] = useState<IPost | null>(null);
+  const [allPosts, setAllPosts] = useState<IPost[]>([]);
 
   const [showModal, openModal, closeModal] = useModal();
   const [showDetailsModal, openDetailsModal, closeDetailsModal] = useModal();
+  const [loading, setLoading] = useLoading();
 
   const insets = useSafeAreaInsets();
 
   const user = useAppSelector((state) => state.appState.user);
 
   const dispatch = useAppDispatch();
-  const [allPosts,setAllPosts] = useState<IPost[]>([])
-  const getAllPosts = async () =>{
-    const posts:IPost[] = []
-    try {
-      const userDocRef = await getDocs(query(collection(FIRESTORE_DB, 'posts'),where("userId","==",user?.uid)));
-      for(let doccument of userDocRef.docs){
-        const postData = await doccument.data() as IPost;
-        const userDoc = await getDoc(doc(FIRESTORE_DB, 'users', postData?.userId));
-        const userData = userDoc.data() as IUser
-        posts.push({...postData,user:userData})
-      }
-      setAllPosts(posts)
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
-  useEffect(()=>{
-    if(user?.uid){
-      getAllPosts()
+  const getAllPosts = async () => {
+    const posts: IPost[] = [];
+    try {
+      setLoading(true);
+      const userDocRef = await getDocs(query(collection(FIRESTORE_DB, 'posts'), where('userId', '==', user?.uid)));
+      for (let doccument of userDocRef.docs) {
+        const postData = (await doccument.data()) as IPost;
+        const userDoc = await getDoc(doc(FIRESTORE_DB, 'users', postData?.userId));
+        const userData = userDoc.data() as IUser;
+        posts.push({ ...postData, user: userData });
+      }
+      setAllPosts(posts);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
-  },[user?.uid])
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getAllPosts();
+      return () => {
+        setAllPosts([]);
+      };
+    }, [])
+  );
+
   const handleLogout = async () => {
     closeModal();
     await signOut(FIREBASE_AUTH);
@@ -94,6 +105,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
           initialNumToRender={10}
           maxToRenderPerBatch={10}
           onEndReached={() => infoFlash('No more posts to show!')}
+          ListEmptyComponent={() => <ListEmpty title='No posts yet' />}
+          refreshControl={<RefreshControl refreshing={loading} onRefresh={getAllPosts} />}
         />
       </View>
       <PostDetailModal

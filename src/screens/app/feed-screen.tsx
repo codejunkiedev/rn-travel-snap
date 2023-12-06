@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
 import React, { Fragment, useEffect, useState } from 'react';
 import { FeedScreenProps, IPost, IUser } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -9,33 +9,46 @@ import { COLORS } from '@/typography';
 import { FeedPostItem } from '@/components';
 import { infoFlash } from '@/helpers/flash-message';
 import { PostDetailModal } from '@/components/modals';
-import { useModal } from '@/hooks';
+import { useLoading, useModal } from '@/hooks';
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { FIRESTORE_DB } from '@/services';
+import { useFocusEffect } from '@react-navigation/native';
+import { ListEmpty } from '@/components/ui/list-empty';
 
 const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
   const [selectedPost, setSelectedPost] = useState<IPost | null>(null);
   const [showDetailsModal, openDetailsModal, closeDetailsModal] = useModal();
-  const [allPosts,setAllPosts] = useState<IPost[]>([])
-  const getAllPosts = async () =>{
-    const posts:IPost[] = []
-    try {
-      const userDocRef = await getDocs(collection(FIRESTORE_DB, 'posts'));
-      for(let doccument of userDocRef.docs){
-        const postData = await doccument.data() as IPost;
-        const userDoc = await getDoc(doc(FIRESTORE_DB, 'users', postData?.userId));
-        const userData = userDoc.data() as IUser
-        posts.push({...postData,user:userData})
-      }
-      setAllPosts(posts)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  const [allPosts, setAllPosts] = useState<IPost[]>([]);
 
-  useEffect(()=>{
-    getAllPosts()
-  },[])
+  const [loading, setLoading] = useLoading();
+
+  const getAllPosts = async () => {
+    const posts: IPost[] = [];
+    try {
+      setLoading(true);
+      const userDocRef = await getDocs(collection(FIRESTORE_DB, 'posts'));
+      for (let doccument of userDocRef.docs) {
+        const postData = (await doccument.data()) as IPost;
+        const userDoc = await getDoc(doc(FIRESTORE_DB, 'users', postData?.userId));
+        const userData = userDoc.data() as IUser;
+        posts.push({ ...postData, user: userData });
+      }
+      setAllPosts(posts);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getAllPosts();
+      return () => {
+        setAllPosts([]);
+      };
+    }, [])
+  );
 
   const insets = useSafeAreaInsets();
 
@@ -67,6 +80,8 @@ const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
           maxToRenderPerBatch={10}
           showsVerticalScrollIndicator={false}
           onEndReached={() => infoFlash('No more posts to show!')}
+          ListEmptyComponent={() => <ListEmpty title='No posts to show' />}
+          refreshControl={<RefreshControl refreshing={loading} onRefresh={getAllPosts} />}
         />
         <FAB onPress={navigateToCreatePost} icon={<FontAwesome name='plus' size={24} color={COLORS.WHITE} />} />
       </View>

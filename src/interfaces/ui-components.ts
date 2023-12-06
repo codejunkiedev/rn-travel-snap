@@ -66,3 +66,7 @@ export interface IModalProps {
   statusBarTranslucent?: ModalProps['statusBarTranslucent'];
   modalStyle?: ViewStyleProp;
 }
+
+export interface IListEmptyProps {
+  title: string;
+}

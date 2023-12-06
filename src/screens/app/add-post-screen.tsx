@@ -71,7 +71,7 @@ const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
       const downloadUrlRes = await getDownloadURL(fileRef);
       payload.imageURL = downloadUrlRes;
       await setDoc(doc(FIRESTORE_DB, 'posts', payload.id), payload);
-      console.log("post created")
+      console.log('post created');
       navigation.goBack();
     } catch (error) {
       console.warn('handlePost error', error);
