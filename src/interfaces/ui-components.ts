@@ -5,12 +5,12 @@ import { ButtonMode, TextStyleProp, ViewStyleProp } from './components';
 
 export interface ILabeledInputProps {
   label: string;
-  value: TextInputProps['value'];
+  value: string;
   showTextCounter?: boolean;
 
   onChangeText: TextInputProps['onChangeText'];
-  onBlur?: TextInputProps['onBlur'];
-  onFocus?: TextInputProps['onFocus'];
+  onBlur?: () => void;
+  onFocus?: () => void;
   placeholder?: TextInputProps['placeholder'];
   secureTextEntry?: TextInputProps['secureTextEntry'];
   keyboardType?: KeyboardType;
