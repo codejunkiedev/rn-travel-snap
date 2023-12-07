@@ -64,3 +64,10 @@ npm run ios
 ```bash
 npm run web
 ```
+
+## Features
+
+  - Photo Feed: A user can view all uploaded photos.
+  - Photo Upload: Users can upload photos to a public feed
+  - Profile Page: A user can view their profile with their uploaded photos
+  - Authentication: A user can signup to create an account and login to access the app
