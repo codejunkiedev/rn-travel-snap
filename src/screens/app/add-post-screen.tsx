@@ -107,8 +107,8 @@ const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
 
   return (
     <Fragment>
-      <ScrollView style={[styles.root, { marginTop: insets.top }]}>
-        <View style={styles.container}>
+      <ScrollView style={{ marginTop: insets.top }} className='flex-1 bg-gray-200'>
+        <View className='flex-1 pb-2'>
           <ImagePicker imageUri={imageUri} onImageSelected={(uri) => setImageUri(uri)} />
           <LabeledInput
             label='Description'
@@ -155,14 +155,3 @@ const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
 };
 
 export default AddPostScreen;
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: COLORS.BACKGROUND,
-  },
-  container: {
-    flex: 1,
-    paddingBottom: 20,
-  },
-});

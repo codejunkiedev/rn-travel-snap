@@ -66,8 +66,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, route }) => {
   };
 
   return (
-    <SafeAreaView style={styles.root}>
-      <Text style={styles.logo}>Travel Snap</Text>
+    <SafeAreaView className='flex-1 pt-20 bg-gray-200'>
+      <Text className='self-center mb-8 text-center text-4xl font-bold text-blue-500 underline'>Travel Snap</Text>
       <LabeledInput
         label='Email'
         placeholder='johndoe@gmail.com'
@@ -100,23 +100,3 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, route }) => {
 };
 
 export default LoginScreen;
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    paddingTop: 100,
-    backgroundColor: COLORS.BACKGROUND,
-  },
-  logo: {
-    width: '80%',
-    alignSelf: 'center',
-    marginBottom: 20,
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    fontSize: FONT_SIZE.HEADER,
-    fontFamily: FONT_FAMILY.POPPINS_BOLD_ITALIC,
-    color: COLORS.PRIMARY,
-    textDecorationColor: COLORS.SECONDARY,
-    textDecorationLine: 'underline',
-  },
-});

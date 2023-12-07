@@ -98,14 +98,14 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, route }) =>
   };
 
   return (
-    <SafeAreaView style={styles.root}>
-      <KeyboardAvoidingView style={styles.root} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <ScrollView style={styles.root} contentContainerStyle={styles.scrollContent}>
+    <SafeAreaView className='flex-1 bg-gray-200'>
+      <KeyboardAvoidingView className='flex-1' behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <ScrollView className='flex-1' contentContainerStyle={styles.scrollContent}>
           <UserImagePicker
             name={formik.values.name}
             imageUri={profilePicture}
             onImageSelected={(uri) => setProfilePicture(uri)}
-            containerStyle={{ marginBottom: 20 }}
+            containerStyle='mb-5'
           />
           <LabeledInput
             label='Name'
@@ -155,10 +155,6 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, route }) =>
 export default RegisterScreen;
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: COLORS.BACKGROUND,
-  },
   scrollContent: {
     flexGrow: 1,
     paddingVertical: 20,

@@ -1,4 +1,4 @@
-import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
+import { FlatList, Platform, RefreshControl, StyleSheet, View } from 'react-native';
 import React, { Fragment, useCallback, useState } from 'react';
 import { FeedScreenProps, IPost, IUser } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -72,17 +72,17 @@ const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
 
   return (
     <Fragment>
-      <View style={[styles.root, { paddingTop: insets.top }]}>
+      <View className='flex-1 bg-gray-200' style={{ paddingTop: insets.top }}>
         <Header />
         <FlatList
           data={allPosts}
           renderItem={({ item }) => <FeedPostItem post={item} onPress={handleZoomImage} />}
           keyExtractor={(item, index) => index.toString()}
-          style={styles.feed}
+          className='flex-1 bg-gray-200'
           contentContainerStyle={styles.feedContentContainer}
           initialNumToRender={10}
           maxToRenderPerBatch={10}
-          showsVerticalScrollIndicator={false}
+          showsVerticalScrollIndicator={Platform.OS === 'web'}
           onEndReached={() => allPosts.length > 0 && infoFlash('No more posts to show!')}
           ListEmptyComponent={() => !loading && <ListEmpty title='No posts to show' />}
           refreshControl={<RefreshControl refreshing={loading} onRefresh={getAllPosts} />}
@@ -101,14 +101,6 @@ const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
 export default FeedScreen;
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: COLORS.BACKGROUND,
-  },
-  feed: {
-    flex: 1,
-    backgroundColor: COLORS.WHITE,
-  },
   feedContentContainer: {
     gap: 10,
     padding: 10,

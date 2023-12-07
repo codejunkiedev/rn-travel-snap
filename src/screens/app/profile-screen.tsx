@@ -1,4 +1,4 @@
-import { FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Platform, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { Fragment, useCallback, useState } from 'react';
 import { IPost, IUser, ProfileScreenProps } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -83,17 +83,17 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
 
   return (
     <Fragment>
-      <View style={[styles.root, { paddingTop: insets.top }]}>
-        <View style={styles.infoContainer}>
+      <View style={{ paddingTop: insets.top }} className='flex-1 bg-gray-200'>
+        <View className='flex-row items-center m-2'>
           <UserImagePicker
             imageUri={user?.profilePicURL || ''}
             name={user?.name || 'John Doe'}
             disabled
-            containerStyle={styles.image}
+            containerStyle='w-20 h-20'
           />
-          <View style={styles.info}>
-            <Text style={styles.name}>{user?.name || 'John Doe'}</Text>
-            <Text style={styles.email}>{user?.email || 'johndoe@gmail.com'}</Text>
+          <View className='flex-1 justify-center pl-2'>
+            <Text className='font-bold text-md'>{user?.name || 'John Doe'}</Text>
+            <Text className='text-sm'>{user?.email || 'johndoe@gmail.com'}</Text>
           </View>
           <TouchableOpacity onPress={openModal}>
             <Ionicons name='settings' size={24} color={COLORS.SECONDARY} />
@@ -104,10 +104,10 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => <ProfilePostItem post={item} onPress={handleZoomImage} />}
           numColumns={3}
-          style={styles.postsGrid}
+          className='flex-1'
           contentContainerStyle={{ gap: 1 }}
           columnWrapperStyle={{ gap: 1 }}
-          showsVerticalScrollIndicator={false}
+          showsVerticalScrollIndicator={Platform.OS === 'web'}
           initialNumToRender={10}
           maxToRenderPerBatch={10}
           onEndReached={() => allPosts.length > 0 && infoFlash('No more posts to show!')}
@@ -135,36 +135,3 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
 };
 
 export default ProfileScreen;
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: COLORS.BACKGROUND,
-  },
-  infoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    margin: 10,
-  },
-  image: {
-    width: 80,
-    height: 80,
-    alignSelf: 'center',
-  },
-  info: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingLeft: 10,
-  },
-  email: {
-    fontSize: FONT_SIZE.SMALL,
-  },
-  name: {
-    fontFamily: FONT_FAMILY.POPPINS_BOLD,
-    fontSize: FONT_SIZE.MEDIUM,
-  },
-  postsGrid: {
-    flex: 1,
-    backgroundColor: COLORS.WHITE,
-  },
-});
