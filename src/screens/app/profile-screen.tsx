@@ -15,6 +15,7 @@ import { infoFlash, warningFlash } from '@/helpers/flash-message';
 import { collection, doc, getDoc, getDocs, orderBy, query } from 'firebase/firestore';
 import { useFocusEffect } from '@react-navigation/native';
 import { ListEmpty } from '@/components/ui/list-empty';
+import tw from 'twrnc';
 
 const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
   const [selectedPost, setSelectedPost] = useState<IPost | null>(null);
@@ -82,17 +83,17 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
 
   return (
     <Fragment>
-      <View style={{ paddingTop: insets.top }} className='flex-1 bg-gray-200'>
-        <View className='flex-row items-center m-2'>
+      <View style={[tw`flex-1 bg-gray-100`, { paddingTop: insets.top }]}>
+        <View style={tw`flex-row items-center m-2`}>
           <UserImagePicker
             imageUri={user?.profilePicURL || ''}
             name={user?.name || 'John Doe'}
             disabled
-            containerStyle='w-20 h-20'
+            containerStyle={tw`h-20 w-20`}
           />
-          <View className='flex-1 justify-center pl-2'>
-            <Text className='font-bold text-md'>{user?.name || 'John Doe'}</Text>
-            <Text className='text-sm'>{user?.email || 'johndoe@gmail.com'}</Text>
+          <View style={tw`flex-1 justify-center pl-2`}>
+            <Text style={tw`font-bold text-md`}>{user?.name || 'John Doe'}</Text>
+            <Text style={tw`text-sm`}>{user?.email || 'johndoe@gmail.com'}</Text>
           </View>
           <TouchableOpacity onPress={openModal}>
             <Ionicons name='settings' size={24} color={COLORS.SECONDARY} />
@@ -103,7 +104,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => <ProfilePostItem post={item} onPress={handleZoomImage} />}
           numColumns={3}
-          className='flex-1'
+          style={tw`flex-1`}
           contentContainerStyle={{ gap: 1 }}
           columnWrapperStyle={{ gap: 1 }}
           showsVerticalScrollIndicator={Platform.OS === 'web'}

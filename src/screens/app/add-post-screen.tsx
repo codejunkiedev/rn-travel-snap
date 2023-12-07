@@ -14,6 +14,7 @@ import { validationSchemaAddPost } from '@/constants';
 import { doc, setDoc } from 'firebase/firestore';
 import { FIREBASE_STORAGE, FIRESTORE_DB } from '@/services';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import tw from 'twrnc';
 
 const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
   const [imageUri, setImageUri] = useState<string>('');
@@ -106,8 +107,8 @@ const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
 
   return (
     <Fragment>
-      <ScrollView style={{ marginTop: insets.top }} className='flex-1 bg-gray-200'>
-        <View className='flex-1 pb-2'>
+      <ScrollView style={[tw`flex-1 bg-gray-100`, { paddingTop: insets.top }]}>
+        <View style={tw`flex-1 pb-2`}>
           <ImagePicker imageUri={imageUri} onImageSelected={(uri) => setImageUri(uri)} />
           <LabeledInput
             label='Description'

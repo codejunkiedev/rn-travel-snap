@@ -8,6 +8,7 @@ import { pickImageFromCamera, pickImageFromLibrary } from '@/helpers/image-picke
 import { COLORS } from '@/typography';
 import { ImagePickerModal, RemoveImageModal } from './modals';
 import { useModal } from '@/hooks';
+import tw from 'twrnc';
 
 // image picker component for user picture
 
@@ -67,10 +68,9 @@ export const UserImagePicker: React.FC<IUserImagePickerProps> = ({
   return (
     <Fragment>
       <TouchableOpacity
-        className={`h-32 w-32 rounded-full self-center overflow-hidden ${containerStyle}`}
+        style={[tw`h-32 w-32 rounded-full self-center overflow-hidden`, styles.container, containerStyle]}
         disabled={disabled ?? false}
         onPress={handleOnPress}
-        style={styles.container}
       >
         {component}
       </TouchableOpacity>

@@ -14,6 +14,7 @@ import { FIREBASE_STORAGE } from '@/services';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { doc, setDoc } from 'firebase/firestore';
 import { successFlash, warningFlash } from '@/helpers/flash-message';
+import tw from 'twrnc';
 
 const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, route }) => {
   const { email, password } = route.params;
@@ -98,9 +99,9 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, route }) =>
   };
 
   return (
-    <SafeAreaView className='flex-1 bg-gray-200'>
-      <KeyboardAvoidingView className='flex-1' behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <ScrollView className='flex-1' contentContainerStyle={styles.scrollContent}>
+    <SafeAreaView style={tw`flex-1 bg-gray-100`}>
+      <KeyboardAvoidingView style={tw`flex-1`} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <ScrollView style={tw`flex-1`} contentContainerStyle={styles.scrollContent}>
           <UserImagePicker
             name={formik.values.name}
             imageUri={profilePicture}

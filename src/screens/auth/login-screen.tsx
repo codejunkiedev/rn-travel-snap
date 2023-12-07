@@ -13,6 +13,7 @@ import { FIREBASE_AUTH, FIRESTORE_DB } from '@/services';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { successFlash, warningFlash } from '@/helpers/flash-message';
+import tw from 'twrnc';
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, route }) => {
   const credentials = route.params;
@@ -66,8 +67,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, route }) => {
   };
 
   return (
-    <SafeAreaView className='flex-1 pt-20 bg-gray-200'>
-      <Text className='self-center mb-8 text-center text-4xl font-bold text-blue-500 underline'>Travel Snap</Text>
+    <SafeAreaView style={tw`flex-1 pt-20 bg-gray-100`}>
+      <Text style={tw`self-center mb-8 text-center text-4xl font-bold text-blue-500 underline`}>Travel Snap</Text>
       <LabeledInput
         label='Email'
         placeholder='johndoe@gmail.com'

@@ -1,8 +1,10 @@
 import type { ViewStyle, TextStyle } from 'react-native';
 import { IPost } from './common';
+import { Style } from 'twrnc';
 
 export type ViewStyleProp = ViewStyle | ViewStyle[];
 export type TextStyleProp = TextStyle | TextStyle[];
+export type TailwindStyle = Style;
 
 export type ButtonMode = 'contained' | 'outlined' | 'text';
 
@@ -12,7 +14,7 @@ export interface IUserImagePickerProps {
   imageUri: string;
   name: string;
   onImageSelected?: (imageUri: string) => void;
-  containerStyle?: string;
+  containerStyle?: TailwindStyle;
   disabled?: boolean;
 }
 

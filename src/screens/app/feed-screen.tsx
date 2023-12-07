@@ -14,6 +14,7 @@ import { collection, doc, getDoc, getDocs, orderBy, query } from 'firebase/fires
 import { FIRESTORE_DB } from '@/services';
 import { useFocusEffect } from '@react-navigation/native';
 import { ListEmpty } from '@/components/ui/list-empty';
+import tw from 'twrnc';
 
 const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
   const [selectedPost, setSelectedPost] = useState<IPost | null>(null);
@@ -72,13 +73,13 @@ const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
 
   return (
     <Fragment>
-      <View className='flex-1 bg-gray-200' style={{ paddingTop: insets.top }}>
+      <View style={[tw`flex-1 bg-gray-100`, { paddingTop: insets.top }]}>
         <Header />
         <FlatList
           data={allPosts}
           renderItem={({ item }) => <FeedPostItem post={item} onPress={handleZoomImage} />}
           keyExtractor={(item, index) => index.toString()}
-          className='flex-1 bg-gray-200'
+          style={tw`flex-1 bg-gray-100`}
           contentContainerStyle={{ gap: 10, padding: 10 }}
           initialNumToRender={10}
           maxToRenderPerBatch={10}
