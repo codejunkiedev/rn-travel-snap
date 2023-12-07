@@ -1,4 +1,4 @@
-import { StyleSheet, Text } from 'react-native';
+import { Text } from 'react-native';
 import React, { useEffect } from 'react';
 import { LoginScreenProps, ILoginForm, IUser } from '@/interfaces';
 import { SafeAreaView } from 'react-native-safe-area-context';

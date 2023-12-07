@@ -1,16 +1,16 @@
-import { FlatList, Platform, RefreshControl, StyleSheet, View } from 'react-native';
+import { FlatList, Platform, RefreshControl, View } from 'react-native';
 import React, { Fragment, useCallback, useState } from 'react';
 import { FeedScreenProps, IPost, IUser } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FAB, Header } from '@/components/ui';
-import { AppScreens, PROFILE_SCREEN_DATA } from '@/constants';
+import { AppScreens } from '@/constants';
 import { Feather } from '@expo/vector-icons';
 import { COLORS } from '@/typography';
 import { FeedPostItem } from '@/components';
 import { infoFlash, warningFlash } from '@/helpers/flash-message';
 import { PostDetailModal } from '@/components/modals';
 import { useLoading, useModal } from '@/hooks';
-import { collection, doc, getDoc, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, orderBy, query } from 'firebase/firestore';
 import { FIRESTORE_DB } from '@/services';
 import { useFocusEffect } from '@react-navigation/native';
 import { ListEmpty } from '@/components/ui/list-empty';
@@ -79,7 +79,7 @@ const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
           renderItem={({ item }) => <FeedPostItem post={item} onPress={handleZoomImage} />}
           keyExtractor={(item, index) => index.toString()}
           className='flex-1 bg-gray-200'
-          contentContainerStyle={styles.feedContentContainer}
+          contentContainerStyle={{ gap: 10, padding: 10 }}
           initialNumToRender={10}
           maxToRenderPerBatch={10}
           showsVerticalScrollIndicator={Platform.OS === 'web'}
@@ -99,10 +99,3 @@ const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
 };
 
 export default FeedScreen;
-
-const styles = StyleSheet.create({
-  feedContentContainer: {
-    gap: 10,
-    padding: 10,
-  },
-});

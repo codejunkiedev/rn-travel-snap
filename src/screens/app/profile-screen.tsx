@@ -1,4 +1,4 @@
-import { FlatList, Platform, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Platform, RefreshControl, Text, TouchableOpacity, View } from 'react-native';
 import React, { Fragment, useCallback, useState } from 'react';
 import { IPost, IUser, ProfileScreenProps } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -8,12 +8,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { AlertModal, PostDetailModal } from '@/components/modals';
 import { removeUser } from '@/redux/app-state.slice';
 import { useLoading, useModal } from '@/hooks';
-import { PROFILE_SCREEN_DATA } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/redux';
 import { signOut } from 'firebase/auth';
 import { FIREBASE_AUTH, FIRESTORE_DB } from '@/services';
 import { infoFlash, warningFlash } from '@/helpers/flash-message';
-import { collection, doc, getDoc, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, orderBy, query } from 'firebase/firestore';
 import { useFocusEffect } from '@react-navigation/native';
 import { ListEmpty } from '@/components/ui/list-empty';
 

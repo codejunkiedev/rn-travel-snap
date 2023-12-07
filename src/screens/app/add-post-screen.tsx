@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import React, { Fragment, useMemo, useState } from 'react';
 import { AddPostScreenProps, IAddPostForm, IPost } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -14,7 +14,6 @@ import { validationSchemaAddPost } from '@/constants';
 import { doc, setDoc } from 'firebase/firestore';
 import { FIREBASE_STORAGE, FIRESTORE_DB } from '@/services';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { v4 as uuidv4 } from 'uuid';
 
 const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
   const [imageUri, setImageUri] = useState<string>('');
