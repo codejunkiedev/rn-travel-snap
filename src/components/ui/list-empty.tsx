@@ -3,6 +3,8 @@ import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
+// list empty component
+
 export const ListEmpty: React.FC<IListEmptyProps> = ({ title }) => {
   return (
     <View style={styles.root}>

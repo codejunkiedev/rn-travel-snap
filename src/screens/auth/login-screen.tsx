@@ -23,12 +23,14 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, route }) => {
 
   const auth = FIREBASE_AUTH;
 
+  // formik hook for form handling
   const formik = useFormik({
     initialValues: { email: credentials.email || '', password: credentials.password || '' },
     validationSchema: validationSchemaSignIn,
     onSubmit: (values) => handleLogin(values),
   });
 
+  // set email and password from route params
   useEffect(() => {
     if (credentials.email && credentials.password) {
       formik.setFieldValue('email', credentials.email);
@@ -36,6 +38,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, route }) => {
     }
   }, [credentials.email, credentials.password]);
 
+  // login with email and password using firebase auth
   const handleLogin = async ({ email, password }: ILoginForm) => {
     try {
       setLoading(true);
@@ -54,6 +57,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, route }) => {
     }
   };
 
+  // navigate to sign up screen
   const navigateToSignUp = () => {
     navigation.navigate(AuthScreens.REGISTER, {
       email: formik.values.email,

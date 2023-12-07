@@ -1,5 +1,5 @@
 import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useCallback, useState } from 'react';
 import { FeedScreenProps, IPost, IUser } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FAB, Header } from '@/components/ui';
@@ -22,6 +22,7 @@ const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
   const [loading, setLoading] = useLoading();
   const [showDetailsModal, openDetailsModal, closeDetailsModal] = useModal();
 
+  // get all posts from firestore
   const getAllPosts = async () => {
     const posts: IPost[] = [];
     try {
@@ -42,26 +43,28 @@ const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
     }
   };
 
+  // get all posts on screen focus
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       getAllPosts();
-      return () => {
-        setAllPosts([]);
-      };
     }, [])
   );
 
+  // get safe area insets
   const insets = useSafeAreaInsets();
 
+  // navigate to create post screen
   const navigateToCreatePost = () => {
     navigation.jumpTo(AppScreens.ADD_POST);
   };
 
+  // show post in full screen details modal
   const handleZoomImage = (post: IPost) => {
     setSelectedPost(post);
     openDetailsModal();
   };
 
+  // close details modal
   const handleCloseDetailsModal = () => {
     closeDetailsModal();
     setSelectedPost(null);

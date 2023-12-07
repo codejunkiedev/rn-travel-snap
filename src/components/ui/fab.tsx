@@ -3,6 +3,8 @@ import { COLORS } from '@/typography';
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
+// Floating Action Button component
+
 export const FAB: React.FC<IFABProps> = ({ icon, onPress, style }) => {
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={onPress} style={[styles.root, style]}>

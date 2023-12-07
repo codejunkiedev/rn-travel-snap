@@ -10,6 +10,8 @@ import { IMAGES } from '@/constants';
 
 const des = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.';
 
+// full screen details modal to show details of a post
+
 export const PostDetailModal: React.FC<IPostDetailModalProps> = ({ isVisible, onClose, selectedPost }) => {
   const insets = useSafeAreaInsets();
 

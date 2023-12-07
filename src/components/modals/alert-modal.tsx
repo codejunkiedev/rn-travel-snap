@@ -4,6 +4,9 @@ import { Button, Modal } from '../ui';
 import { IAlertModalProps } from '@/interfaces';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 
+// React Native Alerts does not work on Web
+// Hence this Alert Modal that will achieve same functionality
+
 export const AlertModal: React.FC<IAlertModalProps> = ({ isVisible, onClose, buttons, title, message }) => {
   return (
     <Modal modalStyle={styles.modal} isVisible={isVisible} onClose={onClose}>

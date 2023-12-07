@@ -18,8 +18,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
   const [imageUri, setImageUri] = useState<string>('');
-  // const myUser = useAppSelector((state) => state.appState.user);
 
+  // formik hook for form handling
   const formik = useFormik({
     initialValues: { content: '' },
     validationSchema: validationSchemaAddPost,
@@ -28,15 +28,20 @@ const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
 
   const [loading, setLoading] = useLoading();
   const [showModal, openModal, closeModal] = useModal();
+
+  // get safe area insets
   const insets = useSafeAreaInsets();
 
+  // check if form is filled
   const isFormFilled = useMemo(
     () => formik.values.content !== '' && imageUri !== '',
     [formik.values.content, imageUri]
   );
 
+  // get user from redux
   const user = useAppSelector((state) => state.appState.user);
 
+  // create post in firestore
   const handlePost = async (values: IAddPostForm) => {
     if (!isFormFilled) {
       infoFlash('Please fill all the fields', 'Image and Description are required');
@@ -84,12 +89,14 @@ const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
     }
   };
 
+  // clear form inputs
   const handleClearInputs = () => {
     formik.resetForm();
     setImageUri('');
     closeModal();
   };
 
+  // discard changes
   const handleDiscardChanges = () => {
     if (isFormFilled) {
       openModal();

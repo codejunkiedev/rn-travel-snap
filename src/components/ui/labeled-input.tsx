@@ -4,6 +4,8 @@ import { ILabeledInputProps } from '@/interfaces';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 import { isDeviceWeb } from '@/constants';
 
+// input component with label
+
 export const LabeledInput: React.FC<ILabeledInputProps> = ({
   label,
   onChangeText,
@@ -35,11 +37,13 @@ export const LabeledInput: React.FC<ILabeledInputProps> = ({
 }) => {
   const [selected, setSelected] = useState<boolean>(false);
 
+  // called when an input field looses focus
   const handleOnBlur = () => {
     setSelected(false);
     onBlur?.();
   };
 
+  // called when an input field is focused
   const handleOnFocus = () => {
     setSelected(true);
     onFocus?.();

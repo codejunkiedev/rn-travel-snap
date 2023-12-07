@@ -11,6 +11,8 @@ import { WIDTH_FOR_WEB } from '@/constants';
 
 const { width, height } = Dimensions.get('window');
 
+// Image Picker component for add post screen
+
 export const ImagePicker: React.FC<IImagePickerProps> = ({ imageUri, containerStyle, disabled, onImageSelected }) => {
   const [showModal1, openModal1, closeModal1] = useModal();
   const [showModal2, openModal2, closeModal2] = useModal();
@@ -30,6 +32,7 @@ export const ImagePicker: React.FC<IImagePickerProps> = ({ imageUri, containerSt
     );
   }
 
+  // pick image from library
   const handlePickImageFromLibrary = async () => {
     const result = await pickImageFromLibrary();
     if (result) {
@@ -38,6 +41,7 @@ export const ImagePicker: React.FC<IImagePickerProps> = ({ imageUri, containerSt
     }
   };
 
+  // capture image from camera
   const handlePickImageFromCamera = async () => {
     const result = await pickImageFromCamera();
     if (result) {
@@ -46,11 +50,13 @@ export const ImagePicker: React.FC<IImagePickerProps> = ({ imageUri, containerSt
     }
   };
 
+  // remove selected image
   const handleRemoveImage = () => {
     closeModal2();
     onImageSelected?.('');
   };
 
+  // show pick image or remove image modal
   const handleOnPress = () => {
     if (imageUri) {
       openModal2();

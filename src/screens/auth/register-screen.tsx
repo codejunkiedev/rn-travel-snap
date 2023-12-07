@@ -21,6 +21,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, route }) =>
   const [profilePicture, setProfilePicture] = useState<string>('');
   const [loading, setLoading] = useLoading();
 
+  // formik hook for form handling
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -32,6 +33,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, route }) =>
     onSubmit: (values) => handleSignUp(values),
   });
 
+  // navigate to login screen and pass email and password as params
   const navigateToLogin = () => {
     navigation.navigate(AuthScreens.LOGIN, {
       email: formik.values.email,
@@ -39,6 +41,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, route }) =>
     });
   };
 
+  // sign up with email and password using firebase auth
   const handleSignUp = async ({ email, password, name }: ISignUpForm) => {
     try {
       setLoading(true);

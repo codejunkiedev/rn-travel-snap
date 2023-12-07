@@ -6,6 +6,8 @@ import { StyleSheet, TouchableOpacity, Platform, Dimensions } from 'react-native
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
+// render item for Profile Screen
+
 export const ProfilePostItem: React.FC<IProfilePostItemProps> = React.memo(({ post: item, onPress }) => {
   return (
     <TouchableOpacity onPress={() => onPress(item)} style={styles.post} activeOpacity={0.8}>
