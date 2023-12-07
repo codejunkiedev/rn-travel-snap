@@ -3,6 +3,8 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { AppBottomTabParamList, AuthStackParamList } from './navigation';
 import { AppScreens, AuthScreens } from '@/constants';
 
+// this file contains the interfaces for the screens
+
 export type LoginScreenProps = NativeStackScreenProps<AuthStackParamList, AuthScreens.LOGIN>;
 export type RegisterScreenProps = NativeStackScreenProps<AuthStackParamList, AuthScreens.REGISTER>;
 

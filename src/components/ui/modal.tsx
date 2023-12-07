@@ -5,6 +5,8 @@ import { WIDTH_FOR_WEB } from '@/constants';
 
 const { width, height } = Dimensions.get('window');
 
+// base modal component on which are modals are designed
+
 export const Modal: React.FC<PropsWithChildren<IModalProps>> = ({
   isVisible,
   animationType,

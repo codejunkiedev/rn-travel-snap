@@ -5,6 +5,8 @@ import { Image } from 'expo-image';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
+// Render item for Feed Screen
+
 export const FeedPostItem: React.FC<IFeedPostItemProps> = React.memo(({ post: item, onPress }) => {
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={() => onPress(item)} style={styles.feedItem}>

@@ -3,6 +3,8 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { IHeaderProps } from '@/interfaces';
 
+// header component with App Name
+
 export const Header: React.FC<IHeaderProps> = ({}) => {
   return (
     <View style={styles.container}>

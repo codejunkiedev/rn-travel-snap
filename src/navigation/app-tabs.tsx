@@ -10,6 +10,12 @@ import { COLORS, FONT_FAMILY } from '@/typography';
 
 const Tabs = createBottomTabNavigator<AppBottomTabParamList>();
 
+// AppTabs is used to create bottom tab navigation
+// FeedScreen is used to show feed
+// AddPostScreen is used to add post
+// ProfileScreen is used to show profile
+// Entypo & MaterialIcons is used to show icons in bottom tab navigation
+
 const AppTabs = () => {
   return (
     <Tabs.Navigator

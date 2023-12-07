@@ -1,5 +1,8 @@
 import * as yup from 'yup';
 
+// validation schema is using with formik form
+// so that we can validate the form before submit
+
 export const validationSchemaSignUp = yup.object().shape({
   name: yup.string().required('Name is required'),
   email: yup.string().email('Invalid email address').required('Email is required'),

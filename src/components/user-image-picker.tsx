@@ -9,6 +9,8 @@ import { COLORS } from '@/typography';
 import { ImagePickerModal, RemoveImageModal } from './modals';
 import { useModal } from '@/hooks';
 
+// image picker component for user picture
+
 export const UserImagePicker: React.FC<IUserImagePickerProps> = ({
   imageUri,
   name,
@@ -29,6 +31,7 @@ export const UserImagePicker: React.FC<IUserImagePickerProps> = ({
     component = <Image source={IMAGES.USER} style={{ flex: 1 }} />;
   }
 
+  // pick image from library
   const handlePickImageFromLibrary = async () => {
     const result = await pickImageFromLibrary();
     if (result) {
@@ -37,6 +40,7 @@ export const UserImagePicker: React.FC<IUserImagePickerProps> = ({
     }
   };
 
+  // capture image from camera
   const handlePickImageFromCamera = async () => {
     const result = await pickImageFromCamera();
     if (result) {
@@ -45,11 +49,13 @@ export const UserImagePicker: React.FC<IUserImagePickerProps> = ({
     }
   };
 
+  // remove selected image
   const handleRemoveImage = () => {
     closeModal2();
     onImageSelected?.('');
   };
 
+  // show pick image or remove image modal
   const handleOnPress = () => {
     if (imageUri) {
       openModal2();

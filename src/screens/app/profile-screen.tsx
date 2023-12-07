@@ -1,5 +1,5 @@
 import { FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useCallback, useState } from 'react';
 import { IPost, IUser, ProfileScreenProps } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
@@ -27,10 +27,12 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
 
   const insets = useSafeAreaInsets();
 
+  // get redux state for user
   const user = useAppSelector((state) => state.appState.user);
 
   const dispatch = useAppDispatch();
 
+  // get all posts from firestore
   const getAllPosts = async () => {
     const posts: IPost[] = [];
     try {
@@ -53,26 +55,27 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
     }
   };
 
+  // get all posts on screen focus
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       getAllPosts();
-      return () => {
-        setAllPosts([]);
-      };
     }, [])
   );
 
+  // logout user
   const handleLogout = async () => {
     closeModal();
     await signOut(FIREBASE_AUTH);
     dispatch(removeUser());
   };
 
+  // show post in full screen details modal
   const handleZoomImage = (post: IPost) => {
     setSelectedPost(post);
     openDetailsModal();
   };
 
+  // close details modal
   const handleCloseDetailsModal = () => {
     closeDetailsModal();
     setSelectedPost(null);

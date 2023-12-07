@@ -4,6 +4,8 @@ import { IAvatarProps } from '@/interfaces';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 import { getInitials } from '@/utils';
 
+// create an avatar based on user name
+
 export const Avatar: React.FC<IAvatarProps> = ({ name }) => {
   const initials = getInitials(name);
   const fontSize = initials.length > 2 ? FONT_SIZE.SUBHEADER : FONT_SIZE.HEADER;

@@ -6,6 +6,8 @@ import { IWrapperProps } from '@/interfaces';
 
 const { height } = Dimensions.get('window');
 
+// wrapper component to check if platform is web and apply styles to root view
+
 export const Wrapper: React.FC<PropsWithChildren<IWrapperProps>> = ({ children }) => {
   if (isDeviceWeb) {
     return (

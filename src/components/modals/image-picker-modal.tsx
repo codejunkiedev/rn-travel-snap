@@ -5,6 +5,8 @@ import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 import { Button, Modal } from '../ui';
 import { Entypo } from '@expo/vector-icons';
 
+// modal to choose image from camera or gallery
+
 export const ImagePickerModal: React.FC<IImagePickerModalProps> = ({
   isVisible,
   onClose,
