@@ -2,6 +2,10 @@ import { IAppState } from '@/interfaces/redux';
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
+// this file contains the redux slice for the app state
+// this is where we will store the user, loading state, etc.
+// this is also where we will put the actions to update the state
+
 const initialState: IAppState = {
   isLoading: false,
   isLoggedIn: false,

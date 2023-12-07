@@ -12,7 +12,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import FlashMessage from 'react-native-flash-message';
 import { Wrapper } from '@/components/ui';
 
-SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync(); // prevent splash screen from hiding
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -22,11 +22,11 @@ export default function App() {
     [FONT_FAMILY.POPPINS_BOLD_ITALIC]: require('@/assets/fonts/Poppins-BoldItalic.ttf'),
     [FONT_FAMILY.POPPINS_LIGHT_ITALIC]: require('@/assets/fonts/Poppins-LightItalic.ttf'),
     [FONT_FAMILY.POPPINS_ITALIC]: require('@/assets/fonts/Poppins-Italic.ttf'),
-  });
+  }); // load fonts using expo-font
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
-      await SplashScreen.hideAsync();
+      await SplashScreen.hideAsync(); // hide splash screen
     }
   }, [fontsLoaded]);
 
@@ -34,6 +34,12 @@ export default function App() {
     return null;
   }
 
+  // SafeAreaProvider is used to provide safe area context to the app
+  // Provider is used to provide redux store to the app
+  // PersistGate is used to persist redux store
+  // FlashMessage is used to show flash messages
+  // StatusBar is used to set status bar color
+  // Wrapper is used to wrap the app and set background color if app the platform is web
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
       <SafeAreaProvider>

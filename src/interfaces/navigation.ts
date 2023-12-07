@@ -1,6 +1,8 @@
 import { AppScreens, AuthScreens } from '@/constants';
 import { ILoginForm } from './payloads';
 
+// this file contains the interfaces for the navigators
+
 export type AuthStackParamList = {
   [AuthScreens.LOGIN]: ILoginForm;
   [AuthScreens.REGISTER]: ILoginForm;

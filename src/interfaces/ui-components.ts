@@ -1,6 +1,8 @@
 import { KeyboardType, ModalProps, TextInputProps } from 'react-native';
 import { ButtonMode, TextStyleProp, ViewStyleProp } from './components';
 
+// this file contains the interfaces for the ui-components
+
 export interface ILabeledInputProps {
   label: string;
   value: TextInputProps['value'];

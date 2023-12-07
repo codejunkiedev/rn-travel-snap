@@ -1,5 +1,7 @@
 import { showMessage } from 'react-native-flash-message';
 
+// these are helper functions to show flash messages
+
 export const successFlash = (message: string, description: string = '') => {
   showMessage({
     message: message,

@@ -6,6 +6,8 @@ export type TextStyleProp = TextStyle | TextStyle[];
 
 export type ButtonMode = 'contained' | 'outlined' | 'text';
 
+// this file contains the interfaces for the components
+
 export interface IUserImagePickerProps {
   imageUri: string;
   name: string;

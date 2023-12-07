@@ -2,6 +2,8 @@ import { AlertButton } from 'react-native';
 import { IPost } from './common';
 import { IModalProps } from './ui-components';
 
+// this file contains the interfaces for the modal components
+
 type ExtendableModalProps = Pick<IModalProps, 'isVisible' | 'onClose'>;
 
 export interface IImagePickerModalProps extends ExtendableModalProps {

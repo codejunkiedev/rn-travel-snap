@@ -1,5 +1,7 @@
 import * as ImagePicker from 'expo-image-picker';
 
+// these functions are used to get permission for camera and library and then pick image from them
+
 export const getPermissionForLibrary = async (): Promise<boolean> => {
   try {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();

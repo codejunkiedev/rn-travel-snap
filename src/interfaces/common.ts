@@ -1,3 +1,5 @@
+// this file contains the interfaces that are used in the app
+
 interface FirebaseResource {
   createdAt: number;
   updatedAt: number;
