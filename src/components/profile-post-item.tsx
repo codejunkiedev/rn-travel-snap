@@ -11,7 +11,7 @@ export const ProfilePostItem: React.FC<IProfilePostItemProps> = React.memo(({ po
     <TouchableOpacity onPress={() => onPress(item)} style={styles.post} activeOpacity={0.8}>
       <Image
         style={{ flex: 1 }}
-        source={{ uri: item.imageURL }}
+        source={{ uri: item?.imageURL || '' }}
         contentFit='cover'
         transition={500}
         cachePolicy={'memory-disk'}

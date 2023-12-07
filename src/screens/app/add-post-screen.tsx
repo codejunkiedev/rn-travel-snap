@@ -5,15 +5,20 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS } from '@/typography';
 import { Button, LabeledInput } from '@/components/ui';
 import { useLoading, useModal } from '@/hooks';
-import { infoFlash, warningFlash } from '@/helpers/flash-message';
+import { infoFlash, successFlash, warningFlash } from '@/helpers/flash-message';
 import { AlertModal } from '@/components/modals';
 import { useAppSelector } from '@/redux';
 import { ImagePicker } from '@/components';
 import { useFormik } from 'formik';
 import { validationSchemaAddPost } from '@/constants';
+import { doc, setDoc } from 'firebase/firestore';
+import { FIREBASE_STORAGE, FIRESTORE_DB } from '@/services';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { v4 as uuidv4 } from 'uuid';
 
 const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
   const [imageUri, setImageUri] = useState<string>('');
+  // const myUser = useAppSelector((state) => state.appState.user);
 
   const formik = useFormik({
     initialValues: { content: '' },
@@ -40,15 +45,37 @@ const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
 
     try {
       setLoading(true);
-      const payload: IPost = {
+      const payload: Partial<IPost> = {
         ...values,
+        id: Date.now().toString(),
         imageURL: imageUri,
-        user: {
-          name: user?.name!,
-          profilePicURL: user?.profilePicURL!,
-          email: user?.email!,
-        },
+        userId: user?.uid,
+        createdAt: Date.now(),
       };
+
+      const fileRef = ref(FIREBASE_STORAGE, `posts/${user?.uid}/${payload.id}`);
+      const blob: Blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          resolve(xhr.response);
+        };
+        xhr.onerror = function () {
+          reject(new TypeError('Network request failed'));
+        };
+        xhr.responseType = 'blob';
+        xhr.open('GET', imageUri, true);
+        xhr.send(null);
+      });
+
+      var mimeString = imageUri.split(',')[0].split(':')[1].split(';')[0];
+      await uploadBytes(fileRef, blob, { contentType: mimeString });
+      const downloadUrlRes = await getDownloadURL(fileRef);
+      payload.imageURL = downloadUrlRes;
+      await setDoc(doc(FIRESTORE_DB, 'posts', payload.id!), payload);
+      successFlash('Post created successfully');
+      console.log('post created');
+      handleClearInputs();
+      navigation.goBack();
     } catch (error) {
       console.warn('handlePost error', error);
       warningFlash('An error occurred while posting');

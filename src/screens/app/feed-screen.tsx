@@ -1,19 +1,55 @@
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
 import React, { Fragment, useState } from 'react';
-import { FeedScreenProps, IPost } from '@/interfaces';
+import { FeedScreenProps, IPost, IUser } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FAB, Header } from '@/components/ui';
 import { AppScreens, PROFILE_SCREEN_DATA } from '@/constants';
-import { FontAwesome } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { COLORS } from '@/typography';
 import { FeedPostItem } from '@/components';
-import { infoFlash } from '@/helpers/flash-message';
+import { infoFlash, warningFlash } from '@/helpers/flash-message';
 import { PostDetailModal } from '@/components/modals';
-import { useModal } from '@/hooks';
+import { useLoading, useModal } from '@/hooks';
+import { collection, doc, getDoc, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { FIRESTORE_DB } from '@/services';
+import { useFocusEffect } from '@react-navigation/native';
+import { ListEmpty } from '@/components/ui/list-empty';
 
 const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
   const [selectedPost, setSelectedPost] = useState<IPost | null>(null);
+  const [allPosts, setAllPosts] = useState<IPost[]>([]);
+
+  const [loading, setLoading] = useLoading();
   const [showDetailsModal, openDetailsModal, closeDetailsModal] = useModal();
+
+  const getAllPosts = async () => {
+    const posts: IPost[] = [];
+    try {
+      setLoading(true);
+      const userDocRef = await getDocs(query(collection(FIRESTORE_DB, 'posts'), orderBy('createdAt', 'desc')));
+      for (let document of userDocRef.docs) {
+        const postData = (await document.data()) as IPost;
+        const userDoc = await getDoc(doc(FIRESTORE_DB, 'users', postData?.userId));
+        const userData = userDoc.data() as IUser;
+        posts.push({ ...postData, user: userData });
+      }
+      setAllPosts(posts);
+    } catch (error) {
+      warningFlash('Failed to fetch posts');
+      console.warn('Failed to fetch posts', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getAllPosts();
+      return () => {
+        setAllPosts([]);
+      };
+    }, [])
+  );
 
   const insets = useSafeAreaInsets();
 
@@ -36,7 +72,7 @@ const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
       <View style={[styles.root, { paddingTop: insets.top }]}>
         <Header />
         <FlatList
-          data={PROFILE_SCREEN_DATA}
+          data={allPosts}
           renderItem={({ item }) => <FeedPostItem post={item} onPress={handleZoomImage} />}
           keyExtractor={(item, index) => index.toString()}
           style={styles.feed}
@@ -44,9 +80,11 @@ const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
           initialNumToRender={10}
           maxToRenderPerBatch={10}
           showsVerticalScrollIndicator={false}
-          onEndReached={() => infoFlash('No more posts to show!')}
+          onEndReached={() => allPosts.length > 0 && infoFlash('No more posts to show!')}
+          ListEmptyComponent={() => !loading && <ListEmpty title='No posts to show' />}
+          refreshControl={<RefreshControl refreshing={loading} onRefresh={getAllPosts} />}
         />
-        <FAB onPress={navigateToCreatePost} icon={<FontAwesome name='plus' size={24} color={COLORS.WHITE} />} />
+        {/* <FAB onPress={navigateToCreatePost} icon={<Feather name='edit' size={22} color={COLORS.WHITE} />} /> */}
       </View>
       <PostDetailModal
         isVisible={showDetailsModal && !!selectedPost}
