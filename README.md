@@ -44,23 +44,23 @@ npm start
   - Create a virtual device in Android Studio
   - Run the virtual device
 
-  ```bash
-  npm run android
-  ```
+```bash
+npm run android
+```
 
 - iOS Simulator
 
   - Install [Xcode](https://developer.apple.com/xcode/)
   - Run the simulator
 
-  ```bash
-  npm run ios
-  ```
+```bash
+npm run ios
+```
 
 - Web
 
   - Run the web app
 
-  ```bash
-  npm run web
-  ```
+```bash
+npm run web
+```
