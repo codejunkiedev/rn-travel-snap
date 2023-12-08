@@ -1,5 +1,5 @@
 import { FlatList, Platform, RefreshControl, Text, TouchableOpacity, View } from 'react-native';
-import React, { Fragment, useCallback, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { IPost, IUser, ProfileScreenProps } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
@@ -13,7 +13,6 @@ import { signOut } from 'firebase/auth';
 import { FIREBASE_AUTH, FIRESTORE_DB } from '@/services';
 import { infoFlash, warningFlash } from '@/helpers/flash-message';
 import { collection, doc, getDoc, getDocs, orderBy, query } from 'firebase/firestore';
-import { useFocusEffect } from '@react-navigation/native';
 import { ListEmpty } from '@/components/ui/list-empty';
 import tw from 'twrnc';
 
@@ -56,11 +55,9 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
   };
 
   // get all posts on screen focus
-  useFocusEffect(
-    useCallback(() => {
-      getAllPosts();
-    }, [])
-  );
+  useEffect(() => {
+    getAllPosts();
+  }, []);
 
   // logout user
   const handleLogout = async () => {

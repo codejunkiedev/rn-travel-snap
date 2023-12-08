@@ -1,5 +1,5 @@
 import { FlatList, Platform, RefreshControl, View } from 'react-native';
-import React, { Fragment, useCallback, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { FeedScreenProps, IPost, IUser } from '@/interfaces';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FAB, Header } from '@/components/ui';
@@ -12,7 +12,6 @@ import { PostDetailModal } from '@/components/modals';
 import { useLoading, useModal } from '@/hooks';
 import { collection, doc, getDoc, getDocs, orderBy, query } from 'firebase/firestore';
 import { FIRESTORE_DB } from '@/services';
-import { useFocusEffect } from '@react-navigation/native';
 import { ListEmpty } from '@/components/ui/list-empty';
 import tw from 'twrnc';
 
@@ -45,11 +44,9 @@ const FeedScreen: React.FC<FeedScreenProps> = ({ navigation, route }) => {
   };
 
   // get all posts on screen focus
-  useFocusEffect(
-    useCallback(() => {
-      getAllPosts();
-    }, [])
-  );
+  useEffect(() => {
+    getAllPosts();
+  }, []);
 
   // get safe area insets
   const insets = useSafeAreaInsets();
