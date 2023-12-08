@@ -13,7 +13,9 @@ export const AlertModal: React.FC<IAlertModalProps> = ({ isVisible, onClose, but
     <Modal modalStyle={tw`justify-center p-3`} isVisible={isVisible} onClose={onClose}>
       <View style={tw`w-full bg-white justify-between p-4 pb-2 elevation-5 rounded-2`}>
         <Text style={[tw`text-lg text-left`, { fontFamily: FONT_FAMILY.POPPINS_BOLD }]}>{title}</Text>
-        {message && <Text style={[tw`text-md text-left`, { fontFamily: FONT_FAMILY.POPPINS_REGULAR }]}>{message}</Text>}
+        {message && (
+          <Text style={[tw`text-base text-left`, { fontFamily: FONT_FAMILY.POPPINS_REGULAR }]}>{message}</Text>
+        )}
         <View style={tw`flex-row justify-between mt-2 w-full`}>
           {buttons.map((button, index) => (
             <Button

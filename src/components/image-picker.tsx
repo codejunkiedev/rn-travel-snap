@@ -28,7 +28,7 @@ export const ImagePicker: React.FC<IImagePickerProps> = ({ imageUri, containerSt
     component = (
       <View style={[tw`flex-1 justify-center items-center`]}>
         <Entypo name='image' size={30} color={COLORS.WHITE} />
-        <Text style={[tw`mt-2 text-white text-md`, { fontFamily: FONT_FAMILY.POPPINS_BOLD }]}>Select Image</Text>
+        <Text style={[tw`mt-2 text-white text-base`, { fontFamily: FONT_FAMILY.POPPINS_BOLD }]}>Select Image</Text>
       </View>
     );
   }

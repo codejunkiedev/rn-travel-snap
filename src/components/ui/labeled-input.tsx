@@ -68,7 +68,7 @@ export const LabeledInput: React.FC<ILabeledInputProps> = ({
         onChangeText={onChangeText}
         keyboardType={keyboardType ?? 'default'}
         style={[
-          tw`text-md text-black`,
+          tw`text-base text-black`,
           { fontFamily: FONT_FAMILY.POPPINS_REGULAR },
           isDeviceWeb && webStyles,
           inputStyle,
