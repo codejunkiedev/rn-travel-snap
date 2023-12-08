@@ -92,7 +92,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
             containerStyle={tw`h-20 w-20`}
           />
           <View style={tw`flex-1 justify-center pl-2`}>
-            <Text style={tw`font-bold text-md`}>{user?.name || 'John Doe'}</Text>
+            <Text style={tw`text-md font-bold`}>{user?.name || 'John Doe'}</Text>
             <Text style={tw`text-sm`}>{user?.email || 'johndoe@gmail.com'}</Text>
           </View>
           <TouchableOpacity onPress={openModal}>

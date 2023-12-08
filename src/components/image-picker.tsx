@@ -8,6 +8,7 @@ import { ImagePickerModal, RemoveImageModal } from './modals';
 import { pickImageFromCamera, pickImageFromLibrary } from '@/helpers/image-picker';
 import { useModal } from '@/hooks';
 import { WIDTH_FOR_WEB } from '@/constants';
+import tw from 'twrnc';
 
 const { width, height } = Dimensions.get('window');
 
@@ -21,13 +22,13 @@ export const ImagePicker: React.FC<IImagePickerProps> = ({ imageUri, containerSt
 
   if (imageUri) {
     component = (
-      <Image source={{ uri: imageUri }} style={styles.image} cachePolicy={'memory-disk'} contentFit='cover' />
+      <Image source={{ uri: imageUri }} style={[tw`flex-1`]} cachePolicy={'memory-disk'} contentFit='cover' />
     );
   } else {
     component = (
-      <View style={styles.placeholder}>
+      <View style={[tw`flex-1 justify-center items-center`]}>
         <Entypo name='image' size={30} color={COLORS.WHITE} />
-        <Text style={styles.placeholderText}>Select Image</Text>
+        <Text style={[tw`mt-2 text-white text-md`, { fontFamily: FONT_FAMILY.POPPINS_BOLD }]}>Select Image</Text>
       </View>
     );
   }
@@ -89,6 +90,9 @@ export const ImagePicker: React.FC<IImagePickerProps> = ({ imageUri, containerSt
 const styles = StyleSheet.create({
   root: {
     margin: 10,
+    aspectRatio: 1,
+    backgroundColor: COLORS.PRIMARY,
+    borderRadius: 10,
     ...Platform.select({
       web: {
         width: WIDTH_FOR_WEB - 20,
@@ -97,23 +101,5 @@ const styles = StyleSheet.create({
         width: width - 20,
       },
     }),
-    aspectRatio: 1,
-    backgroundColor: COLORS.PRIMARY,
-    borderRadius: 10,
-  },
-  placeholder: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  placeholderText: {
-    marginTop: 10,
-    fontSize: FONT_SIZE.MEDIUM,
-    color: COLORS.WHITE,
-    fontFamily: FONT_FAMILY.POPPINS_BOLD,
-  },
-  image: {
-    flex: 1,
-    resizeMode: 'cover',
   },
 });

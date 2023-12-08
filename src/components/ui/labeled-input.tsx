@@ -3,6 +3,7 @@ import React, { useMemo, useState } from 'react';
 import { ILabeledInputProps } from '@/interfaces';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 import { isDeviceWeb } from '@/constants';
+import tw from 'twrnc';
 
 // input component with label
 
@@ -52,15 +53,26 @@ export const LabeledInput: React.FC<ILabeledInputProps> = ({
   const isTextLimit = useMemo(() => value.length >= maxLength, [value, maxLength]);
 
   return (
-    <View style={[styles.container, selected && styles.selected, containerStyle]}>
-      <Text style={[styles.label, labelStyle]}>{label}</Text>
+    <View
+      style={[
+        tw`rounded-md p-2 bg-white elevation-3 shadow-md my-1 mx-2.5 border-2 border-white`,
+        selected && { borderColor: COLORS.PRIMARY },
+        containerStyle,
+      ]}
+    >
+      <Text style={[tw`text-sm text-black`, { fontFamily: FONT_FAMILY.POPPINS_BOLD }, labelStyle]}>{label}</Text>
       <TextInput
         placeholder={placeholder ?? label}
         secureTextEntry={secureTextEntry ?? false}
         value={value}
         onChangeText={onChangeText}
         keyboardType={keyboardType ?? 'default'}
-        style={[styles.input, isDeviceWeb && webStyles, inputStyle]}
+        style={[
+          tw`text-md text-black`,
+          { fontFamily: FONT_FAMILY.POPPINS_REGULAR },
+          isDeviceWeb && webStyles,
+          inputStyle,
+        ]}
         onFocus={handleOnFocus}
         onBlur={handleOnBlur}
         autoCapitalize={autoCapitalize ?? 'none'}
@@ -78,63 +90,24 @@ export const LabeledInput: React.FC<ILabeledInputProps> = ({
         textAlignVertical={textAlignVertical ?? multiline ? 'top' : 'center'}
       />
       {showTextCounter && (
-        <Text style={[styles.counter, isTextLimit && styles.counterError]}>
+        <Text
+          style={[
+            tw`text-xs text-black mt-1 text-right`,
+            { fontFamily: FONT_FAMILY.POPPINS_REGULAR },
+            isTextLimit && { color: COLORS.DANGER },
+          ]}
+        >
           {value.length}/{maxLength}
         </Text>
       )}
-      {error && touched && <Text style={styles.error}>{error}</Text>}
+      {error && touched && (
+        <Text style={[tw`mt-1 text-xs`, { color: COLORS.DANGER, fontFamily: FONT_FAMILY.POPPINS_REGULAR }]}>
+          {error}
+        </Text>
+      )}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    borderRadius: 8,
-    paddingVertical: 5,
-    paddingHorizontal: 8,
-    backgroundColor: COLORS.WHITE,
-    elevation: 3,
-    shadowColor: COLORS.BLACK,
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    marginVertical: 5,
-    marginHorizontal: 10,
-    shadowOffset: { width: 0, height: 0 },
-    borderWidth: 1,
-    borderColor: COLORS.WHITE,
-  },
-  selected: {
-    borderColor: COLORS.PRIMARY,
-  },
-  label: {
-    fontSize: FONT_SIZE.SMALL,
-    color: COLORS.BLACK,
-    fontFamily: FONT_FAMILY.POPPINS_BOLD,
-  },
-  input: {
-    fontSize: FONT_SIZE.MEDIUM,
-    color: COLORS.BLACK,
-    fontFamily: FONT_FAMILY.POPPINS_REGULAR,
-  },
-  error: {
-    fontSize: FONT_SIZE.EXTRA_SMALL,
-    color: COLORS.DANGER,
-    fontFamily: FONT_FAMILY.POPPINS_REGULAR,
-    marginTop: 5,
-    textAlignVertical: 'center',
-  },
-  counter: {
-    fontSize: FONT_SIZE.EXTRA_SMALL,
-    color: COLORS.BLACK,
-    fontFamily: FONT_FAMILY.POPPINS_REGULAR,
-    marginTop: 5,
-    textAlignVertical: 'center',
-    alignSelf: 'flex-end',
-  },
-  counterError: {
-    color: COLORS.DANGER,
-  },
-});
 
 // required for web
 const webStyles: any = {

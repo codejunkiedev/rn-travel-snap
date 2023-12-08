@@ -4,15 +4,20 @@ import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 import { Image } from 'expo-image';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import tw from 'twrnc';
 
 // Render item for Feed Screen
 
 export const FeedPostItem: React.FC<IFeedPostItemProps> = React.memo(({ post: item, onPress }) => {
   return (
-    <TouchableOpacity activeOpacity={0.8} onPress={() => onPress(item)} style={styles.feedItem}>
-      <View style={styles.userRow}>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={() => onPress(item)}
+      style={[tw`rounded-2 p-3 elevation-3 bg-white shadow-opacity-0.1 shadow-radius-10 shadow-offset-0-5`]}
+    >
+      <View style={[tw`flex-row items-center`]}>
         <Image
-          style={styles.userImage}
+          style={tw`w-8 h-8 rounded-25 mr-3`}
           source={{ uri: item?.user?.profilePicURL || '' }}
           contentFit='cover'
           placeholder={IMAGES.USER}
@@ -20,11 +25,11 @@ export const FeedPostItem: React.FC<IFeedPostItemProps> = React.memo(({ post: it
           transition={300}
           cachePolicy={'memory-disk'}
         />
-        <Text style={styles.userName}>{item?.user?.name || ''}</Text>
+        <Text style={[tw`text-sm`, { fontFamily: FONT_FAMILY.POPPINS_BOLD }]}>{item?.user?.name || ''}</Text>
       </View>
-      <View style={styles.postCol}>
+      <View style={tw`w-full`}>
         <Image
-          style={styles.postImage}
+          style={tw`w-full h-80 mt-3`}
           source={{ uri: item?.imageURL || '' }}
           contentFit='cover'
           placeholder={'https://placehold.co/400'}
@@ -33,48 +38,7 @@ export const FeedPostItem: React.FC<IFeedPostItemProps> = React.memo(({ post: it
           cachePolicy={'memory-disk'}
         />
       </View>
-      <Text style={styles.postCaption}>{item.content}</Text>
+      <Text style={[tw`mt-2 text-sm`, { fontFamily: FONT_FAMILY.POPPINS_REGULAR }]}>{item.content}</Text>
     </TouchableOpacity>
   );
-});
-
-const styles = StyleSheet.create({
-  feedItem: {
-    borderRadius: 10,
-    padding: 10,
-    elevation: 3,
-    backgroundColor: COLORS.WHITE,
-    shadowColor: COLORS.BLACK,
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 5 },
-  },
-  userRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  userImage: {
-    width: 30,
-    height: 30,
-    borderRadius: 25,
-    marginRight: 10,
-  },
-  userName: {
-    fontSize: FONT_SIZE.SMALL,
-    fontFamily: FONT_FAMILY.POPPINS_BOLD,
-  },
-  postCol: {
-    width: '100%',
-  },
-  postImage: {
-    width: '100%',
-    height: 300,
-    borderRadius: 10,
-    marginTop: 10,
-  },
-  postCaption: {
-    fontSize: FONT_SIZE.SMALL,
-    fontFamily: FONT_FAMILY.POPPINS_REGULAR,
-    marginTop: 10,
-  },
 });

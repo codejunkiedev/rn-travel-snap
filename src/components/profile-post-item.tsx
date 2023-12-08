@@ -3,6 +3,7 @@ import { IProfilePostItemProps } from '@/interfaces';
 import { Image } from 'expo-image';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Platform, Dimensions } from 'react-native';
+import tw from 'twrnc';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -12,7 +13,7 @@ export const ProfilePostItem: React.FC<IProfilePostItemProps> = React.memo(({ po
   return (
     <TouchableOpacity onPress={() => onPress(item)} style={styles.post} activeOpacity={0.8}>
       <Image
-        style={{ flex: 1 }}
+        style={tw`flex-1`}
         source={{ uri: item?.imageURL || '' }}
         contentFit='cover'
         transition={500}

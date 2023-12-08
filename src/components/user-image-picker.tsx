@@ -68,7 +68,10 @@ export const UserImagePicker: React.FC<IUserImagePickerProps> = ({
   return (
     <Fragment>
       <TouchableOpacity
-        style={[tw`h-32 w-32 rounded-full self-center overflow-hidden`, styles.container, containerStyle]}
+        style={[
+          tw`h-32 w-32 rounded-full self-center overflow-hidden elevation-5 shadow-black shadow-offset-0-2 shadow-opacity-25 shadow-radius-5 bg-white`,
+          containerStyle,
+        ]}
         disabled={disabled ?? false}
         onPress={handleOnPress}
       >
@@ -84,14 +87,3 @@ export const UserImagePicker: React.FC<IUserImagePickerProps> = ({
     </Fragment>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    elevation: 5,
-    shadowColor: COLORS.BLACK,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 5,
-    backgroundColor: COLORS.WHITE,
-  },
-});

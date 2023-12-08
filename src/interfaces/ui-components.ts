@@ -1,5 +1,5 @@
 import { KeyboardType, ModalProps, TextInputProps } from 'react-native';
-import { ButtonMode, TextStyleProp, ViewStyleProp } from './components';
+import { ButtonMode, TailwindStyle, TextStyleProp, ViewStyleProp } from './components';
 
 // this file contains the interfaces for the ui-components
 
@@ -28,9 +28,9 @@ export interface ILabeledInputProps {
   textAlign?: TextInputProps['textAlign'];
   textAlignVertical?: TextInputProps['textAlignVertical'];
 
-  labelStyle?: TextStyleProp;
-  inputStyle?: TextStyleProp;
-  containerStyle?: ViewStyleProp;
+  labelStyle?: TailwindStyle;
+  inputStyle?: TailwindStyle;
+  containerStyle?: TailwindStyle;
 
   touched?: boolean;
   error?: string;
@@ -52,7 +52,7 @@ export interface IAvatarProps {
 export interface IFABProps {
   onPress: () => void;
   icon: React.ReactNode;
-  style?: ViewStyleProp;
+  style?: TailwindStyle;
 }
 
 export interface IHeaderProps {}

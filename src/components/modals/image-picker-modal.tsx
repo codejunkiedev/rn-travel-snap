@@ -4,6 +4,7 @@ import { IImagePickerModalProps } from '@/interfaces';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 import { Button, Modal } from '../ui';
 import { Entypo } from '@expo/vector-icons';
+import tw from 'twrnc';
 
 // modal to choose image from camera or gallery
 
@@ -14,15 +15,15 @@ export const ImagePickerModal: React.FC<IImagePickerModalProps> = ({
   onPressGallery,
 }) => {
   return (
-    <Modal modalStyle={styles.modal} isVisible={isVisible} onClose={onClose}>
-      <View style={styles.modalContent}>
-        <Text style={styles.modalTitle}>Choose Image</Text>
-        <View style={styles.buttonsRow}>
-          <TouchableOpacity style={styles.button} onPress={onPressCamera}>
+    <Modal modalStyle={tw`justify-end`} isVisible={isVisible} onClose={onClose}>
+      <View style={[tw`h-1/3 w-full justify-around bg-white p-3 rounded-t-4`]}>
+        <Text style={[tw`text-lg text-center`, { fontFamily: FONT_FAMILY.POPPINS_BOLD }]}>Choose Image</Text>
+        <View style={tw`flex-row justify-between`}>
+          <TouchableOpacity style={tw`items-center w-2/4.5`} onPress={onPressCamera}>
             <Entypo name='camera' size={30} color={COLORS.SECONDARY} />
             <Text style={styles.buttonText}>Camera</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={onPressGallery}>
+          <TouchableOpacity style={tw`items-center w-2/4.5`} onPress={onPressGallery}>
             <Entypo name='folder' size={30} color={COLORS.SECONDARY} />
             <Text style={styles.buttonText}>Gallery</Text>
           </TouchableOpacity>
@@ -34,31 +35,6 @@ export const ImagePickerModal: React.FC<IImagePickerModalProps> = ({
 };
 
 const styles = StyleSheet.create({
-  modal: {
-    justifyContent: 'flex-end',
-  },
-  modalContent: {
-    height: '30%',
-    width: '100%',
-    justifyContent: 'space-around',
-    backgroundColor: COLORS.WHITE,
-    padding: 20,
-    borderTopStartRadius: 20,
-    borderTopEndRadius: 20,
-  },
-  modalTitle: {
-    fontSize: FONT_SIZE.LARGE,
-    fontFamily: FONT_FAMILY.POPPINS_BOLD,
-    textAlign: 'center',
-  },
-  buttonsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  button: {
-    alignItems: 'center',
-    width: '45%',
-  },
   buttonText: {
     fontSize: FONT_SIZE.MEDIUM,
     fontFamily: FONT_FAMILY.POPPINS_BOLD,

@@ -3,17 +3,18 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Button, Modal } from '../ui';
 import { IAlertModalProps } from '@/interfaces';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
+import tw from 'twrnc';
 
 // React Native Alerts does not work on Web
 // Hence this Alert Modal that will achieve same functionality
 
 export const AlertModal: React.FC<IAlertModalProps> = ({ isVisible, onClose, buttons, title, message }) => {
   return (
-    <Modal modalStyle={styles.modal} isVisible={isVisible} onClose={onClose}>
-      <View style={styles.modalContent}>
-        <Text style={styles.title}>{title}</Text>
-        {message && <Text style={styles.message}>{message}</Text>}
-        <View style={styles.buttonsRow}>
+    <Modal modalStyle={tw`justify-center p-3`} isVisible={isVisible} onClose={onClose}>
+      <View style={tw`w-full bg-white justify-between p-4 pb-2 elevation-5 rounded-2`}>
+        <Text style={[tw`text-lg text-left`, { fontFamily: FONT_FAMILY.POPPINS_BOLD }]}>{title}</Text>
+        {message && <Text style={[tw`text-md text-left`, { fontFamily: FONT_FAMILY.POPPINS_REGULAR }]}>{message}</Text>}
+        <View style={tw`flex-row justify-between mt-2 w-full`}>
           {buttons.map((button, index) => (
             <Button
               key={index}
@@ -21,10 +22,11 @@ export const AlertModal: React.FC<IAlertModalProps> = ({ isVisible, onClose, but
               title={button.text ?? 'Button'}
               mode='text'
               textStyle={[
-                styles.buttonText,
+                tw`text-lg text-center uppercase`,
+                { fontFamily: FONT_FAMILY.POPPINS_BOLD },
                 { color: button.style === 'destructive' ? COLORS.DANGER : COLORS.SECONDARY },
               ]}
-              buttonStyle={[styles.button, { minWidth: `${100 / buttons.length}%` }]}
+              buttonStyle={[tw`m-0`, { minWidth: `${100 / buttons.length}%` }]}
             />
           ))}
         </View>
@@ -32,48 +34,3 @@ export const AlertModal: React.FC<IAlertModalProps> = ({ isVisible, onClose, but
     </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  modal: {
-    justifyContent: 'center',
-    padding: 20,
-  },
-  modalContent: {
-    width: '100%',
-    backgroundColor: COLORS.WHITE,
-    justifyContent: 'space-between',
-    padding: 20,
-    paddingBottom: 10,
-    elevation: 5,
-    borderRadius: 5,
-  },
-  title: {
-    fontSize: FONT_SIZE.LARGE,
-    fontFamily: FONT_FAMILY.POPPINS_BOLD,
-    textAlign: 'left',
-    textAlignVertical: 'center',
-  },
-  message: {
-    fontSize: FONT_SIZE.MEDIUM,
-    fontFamily: FONT_FAMILY.POPPINS_REGULAR,
-    textAlign: 'left',
-    textAlignVertical: 'center',
-  },
-  buttonsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
-    width: '100%',
-  },
-  button: {
-    marginHorizontal: 0,
-    marginVertical: 0,
-  },
-  buttonText: {
-    fontSize: FONT_SIZE.LARGE,
-    fontFamily: FONT_FAMILY.POPPINS_BOLD,
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    textTransform: 'uppercase',
-  },
-});
