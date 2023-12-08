@@ -25,7 +25,7 @@ export const UserImagePicker: React.FC<IUserImagePickerProps> = ({
   let component = null;
 
   if (imageUri) {
-    component = <Image source={{ uri: imageUri }} style={{ flex: 1 }} contentFit='cover' cachePolicy={'memory-disk'} />;
+    component = <Image source={{ uri: imageUri }} style={tw`flex-1`} contentFit='cover' cachePolicy={'memory-disk'} />;
   } else if (name) {
     component = <Avatar name={name} />;
   } else {
