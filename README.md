@@ -72,7 +72,7 @@ npm start
   - Run the virtual device
 
 ```bash
-npm run android
+Press the "a" key in your terminal to run the app on the Android virtual device
 ```
 
 - iOS Simulator
@@ -81,15 +81,15 @@ npm run android
   - Run the simulator
 
 ```bash
-npm run ios
+Press the "i" key in your terminal to run the app on the iOS simulator
 ```
 
 - Web
 
-  - Run the web app
+  - Open the browser
 
 ```bash
-npm run web
+Press the "w" key in your terminal to run the app on the web
 ```
 
 ## Features
