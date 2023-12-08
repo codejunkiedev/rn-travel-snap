@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { Button, Modal } from '../ui';
 import { IAlertModalProps } from '@/interfaces';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';

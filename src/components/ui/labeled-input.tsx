@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 import React, { useMemo, useState } from 'react';
 import { ILabeledInputProps } from '@/interfaces';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';

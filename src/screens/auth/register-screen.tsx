@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, ScrollView, StyleSheet, Platform } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import React, { useState } from 'react';
 import { ISignUpForm, RegisterScreenProps } from '@/interfaces';
 import { COLORS } from '@/typography';
@@ -154,11 +154,3 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, route }) =>
 };
 
 export default RegisterScreen;
-
-const styles = StyleSheet.create({
-  scrollContent: {
-    flexGrow: 1,
-    paddingVertical: 20,
-    paddingTop: 100,
-  },
-});

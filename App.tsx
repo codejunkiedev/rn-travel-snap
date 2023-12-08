@@ -1,6 +1,6 @@
 import AppNavigation from '@/navigation';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, Platform } from 'react-native';
+import { View, Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -11,6 +11,7 @@ import { persistor, store } from '@/redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import FlashMessage from 'react-native-flash-message';
 import { Wrapper } from '@/components/ui';
+import tw from 'twrnc';
 
 SplashScreen.preventAutoHideAsync(); // prevent splash screen from hiding
 
@@ -41,7 +42,7 @@ export default function App() {
   // StatusBar is used to set status bar color
   // Wrapper is used to wrap the app and set background color if app the platform is web
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
+    <View style={tw`flex-1`} onLayout={onLayoutRootView}>
       <SafeAreaProvider>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
@@ -62,9 +63,3 @@ export default function App() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

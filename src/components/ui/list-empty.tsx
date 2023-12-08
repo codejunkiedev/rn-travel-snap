@@ -1,7 +1,7 @@
 import { IListEmptyProps } from '@/interfaces';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import tw from 'twrnc';
 
 // list empty component

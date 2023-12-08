@@ -1,6 +1,6 @@
 import { IPostDetailModalProps } from '@/interfaces';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { FAB, Modal } from '../ui';
 import { Image } from 'expo-image';
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';

@@ -1,6 +1,6 @@
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '@/typography';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { IHeaderProps } from '@/interfaces';
 import tw from 'twrnc';
 
