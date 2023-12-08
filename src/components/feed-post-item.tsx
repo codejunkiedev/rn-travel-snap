@@ -29,7 +29,7 @@ export const FeedPostItem: React.FC<IFeedPostItemProps> = React.memo(({ post: it
       </View>
       <View style={tw`w-full`}>
         <Image
-          style={tw`w-full h-80 mt-3`}
+          style={tw`w-full h-80 mt-3 rounded-2`}
           source={{ uri: item?.imageURL || '' }}
           contentFit='cover'
           placeholder={'https://placehold.co/400'}

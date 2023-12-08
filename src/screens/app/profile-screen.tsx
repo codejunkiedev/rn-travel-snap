@@ -84,7 +84,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
   return (
     <Fragment>
       <View style={[tw`flex-1 bg-gray-100`, { paddingTop: insets.top }]}>
-        <View style={tw`flex-row items-center m-2`}>
+        <View style={tw`flex-row items-center py-4 px-2`}>
           <UserImagePicker
             imageUri={user?.profilePicURL || ''}
             name={user?.name || 'John Doe'}
@@ -104,7 +104,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => <ProfilePostItem post={item} onPress={handleZoomImage} />}
           numColumns={3}
-          style={tw`flex-1`}
+          style={tw`flex-1 bg-white`}
           contentContainerStyle={{ gap: 1 }}
           columnWrapperStyle={{ gap: 1 }}
           showsVerticalScrollIndicator={Platform.OS === 'web'}

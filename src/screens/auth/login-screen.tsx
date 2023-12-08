@@ -68,7 +68,14 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={tw`flex-1 pt-20 bg-gray-100`}>
-      <Text style={tw`self-center mb-8 text-center text-4xl font-bold text-blue-500 underline`}>Travel Snap</Text>
+      <Text
+        style={[
+          tw`self-center mb-8 text-center text-4xl text-blue-500 underline`,
+          { fontFamily: FONT_FAMILY.POPPINS_BOLD },
+        ]}
+      >
+        Travel Snap
+      </Text>
       <LabeledInput
         label='Email'
         placeholder='johndoe@gmail.com'

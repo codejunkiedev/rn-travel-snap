@@ -107,31 +107,33 @@ const AddPostScreen: React.FC<AddPostScreenProps> = ({ navigation, route }) => {
 
   return (
     <Fragment>
-      <ScrollView style={[tw`flex-1 bg-gray-100`, { paddingTop: insets.top }]}>
-        <View style={tw`flex-1 pb-2`}>
-          <ImagePicker imageUri={imageUri} onImageSelected={(uri) => setImageUri(uri)} />
-          <LabeledInput
-            label='Description'
-            value={formik.values.content}
-            multiline
-            numberOfLines={3}
-            maxLength={250}
-            autoCapitalize={'sentences'}
-            editable={!loading}
-            onChangeText={formik.handleChange('content')}
-            error={formik.errors.content}
-            touched={formik.touched.content}
-            showTextCounter
-          />
-          <Button
-            title='Create Post'
-            onPress={formik.handleSubmit}
-            isLoading={loading}
-            buttonStyle={{ marginTop: 10 }}
-          />
-          <Button title='Discard Changes' onPress={handleDiscardChanges} mode='outlined' />
-        </View>
-      </ScrollView>
+      <View style={[tw`flex-1 bg-gray-100`, { paddingTop: insets.top }]}>
+        <ScrollView style={[tw`flex-1`]} contentContainerStyle={tw`pb-2`}>
+          <View style={tw`flex-1`}>
+            <ImagePicker imageUri={imageUri} onImageSelected={(uri) => setImageUri(uri)} />
+            <LabeledInput
+              label='Description'
+              value={formik.values.content}
+              multiline
+              numberOfLines={3}
+              maxLength={250}
+              autoCapitalize={'sentences'}
+              editable={!loading}
+              onChangeText={formik.handleChange('content')}
+              error={formik.errors.content}
+              touched={formik.touched.content}
+              showTextCounter
+            />
+            <Button
+              title='Create Post'
+              onPress={formik.handleSubmit}
+              isLoading={loading}
+              buttonStyle={{ marginTop: 10 }}
+            />
+            <Button title='Discard Changes' onPress={handleDiscardChanges} mode='outlined' />
+          </View>
+        </ScrollView>
+      </View>
       <AlertModal
         isVisible={showModal}
         onClose={closeModal}
