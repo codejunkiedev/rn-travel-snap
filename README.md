@@ -10,30 +10,57 @@ Firstly, make sure you have Node.js (which comes with npm) installed on your mac
 npm install -g expo-cli
 ```
 
-## 2. Navigate to the project folder
+You also need to install the EAS CLI command line utility by running:
+
+```bash
+npm install -g eas-cli
+```
+
+## 2. Login into Expo account
+
+You need to login to Expo CLI by running:
+
+```bash
+npx expo login
+```
+
+after this you need to login to EAS CLI by running:
+
+```bash
+npx eas login
+```
+
+with following credentials:
+
+- email: `travelsnapdev@gmail.com`
+- password: `TravelSnap`
+
+## 3. Navigate to the project folder
 
 ```bash
 cd rn-travel-snap
 ```
 
-## 3. Install dependencies
+## 4. Install dependencies
 
 ```bash
 npm install
 ```
 
-## 4. Start the development server
+## 5. Start the development server
 
 ```bash
 npm start
 ```
 
-## 5. Run the app on your phone
+## 6. Run the app on your phone
 
 - Install the Expo app on your [iOS](https://itunes.com/apps/exponent) or [Android](https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www) phone
+- Connect your phone to the same wireless network as your computer
+- Log in to Expo using the account mentioned previously
 - Scan the QR code displayed in your terminal from the Expo app to run the project on your phone
 
-## 6. Run the app on your computer
+## 7. Run the app on your computer
 
 - Android
 
@@ -67,7 +94,7 @@ npm run web
 
 ## Features
 
-  - Photo Feed: A user can view all uploaded photos.
-  - Photo Upload: Users can upload photos to a public feed
-  - Profile Page: A user can view their profile with their uploaded photos
-  - Authentication: A user can signup to create an account and login to access the app
+- Photo Feed: A user can view all uploaded photos.
+- Photo Upload: Users can upload photos to a public feed
+- Profile Page: A user can view their profile with their uploaded photos
+- Authentication: A user can signup to create an account and login to access the app
